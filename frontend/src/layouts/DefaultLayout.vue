@@ -1,0 +1,19 @@
+<template>
+    <div class="flex min-h-screen">
+        <!-- Top Navbar -->
+        <Header />
+
+        <!-- Left Sidebar -->
+        <Sidebar />
+
+        <!-- Main Content Area -->
+        <main class="relative z-10 ml-64 min-h-[calc(100vh-72px)] flex-1 bg-gray-100 pt-[72px]">
+            <router-view></router-view>
+        </main>
+    </div>
+</template>
+
+<script setup lang="ts">
+import Header from '@/components/navigation/Header.vue';
+import Sidebar from '@/components/navigation/Sidebar.vue';
+</script>

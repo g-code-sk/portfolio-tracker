@@ -1,0 +1,33 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+
+/* Force light mode globally */
+:root {
+    color-scheme: light only;
+}
+
+/* Disable dark mode detection */
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: light only;
+    }
+}
+
+/* Force light backgrounds for Ionic components */
+body {
+    --ion-background-color: #ffffff;
+    --ion-text-color: #000000;
+}
+
+/* Ensure native form elements use light backgrounds */
+input,
+textarea,
+select {
+    color-scheme: light;
+    background-color: white;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    color-scheme: light;
+}
