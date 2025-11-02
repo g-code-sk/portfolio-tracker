@@ -5,15 +5,35 @@
                 <h1 class="text-2xl font-bold text-gray-900">Portfolio Tracker</h1>
             </div>
             <div class="flex items-center space-x-4">
+                <span v-if="user" class="text-sm text-gray-600">{{ user.name }}</span>
                 <button class="rounded-lg bg-transparent px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900">
                     Settings
                 </button>
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 font-semibold text-white">U</div>
+                <button
+                    @click="handleLogout"
+                    class="rounded-lg bg-transparent px-4 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
+                >
+                    Logout
+                </button>
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 font-semibold text-white">
+                    {{ userInitial }}
+                </div>
             </div>
         </div>
     </header>
 </template>
 
 <script setup lang="ts">
-</script>
+import { useAuth } from '@/composables/useAuth';
+import { computed } from 'vue';
 
+const { user, logout } = useAuth();
+
+const userInitial = computed(() => {
+    return user.value?.name?.charAt(0).toUpperCase() || 'U';
+});
+
+const handleLogout = async () => {
+    await logout();
+};
+</script>
