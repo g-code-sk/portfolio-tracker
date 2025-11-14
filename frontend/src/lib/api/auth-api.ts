@@ -1,6 +1,6 @@
 import { getStoredToken, removeStoredToken, setStoredToken } from '@/lib/auth-token';
 import { api } from '@/lib/client';
-import type { AuthResponse, LoginData, RegisterData, User } from '@/lib/types/auth';
+import type { AuthResponse, LoginData, RegisterData, User } from '@/lib/types/auth-types';
 import { getDeviceName } from '@/lib/utils';
 
 /**

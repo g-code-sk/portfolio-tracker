@@ -1,5 +1,5 @@
 import { api } from '@/lib/client';
-import type { Device } from '@/lib/types/device';
+import type { Device } from '@/lib/types/device-types';
 
 /**
  * Get all devices for the current user

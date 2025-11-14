@@ -26,3 +26,15 @@ export interface AuthResponse {
     user: User;
     token: string;
 }
+
+export interface AuthActionResponse {
+    success: boolean;
+    user: User | null;
+    error: string | null;
+    errors: Record<string, string[]> | null;
+}
+
+export interface LogoutActionResult {
+    success: boolean;
+    error: string | null;
+}
