@@ -2,6 +2,7 @@
 
 use App\Domain\Auth\Controllers\Api\AuthController;
 use App\Domain\Currency\Controllers\Api\CurrencyController;
+use App\Domain\Portfolio\Controllers\Api\UserPortfolioController;
 use App\Http\Controllers\Api\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Currencies
     Route::get('/currencies', [CurrencyController::class, 'index']);
+
+    // User routes
+    Route::prefix('user')->as('user.')->group(function () {
+        Route::get('/portfolios', [UserPortfolioController::class, 'index'])->name('portfolios.index');
+    });
 
     // Device/session management
     Route::get('/devices', [AuthController::class, 'devices']);

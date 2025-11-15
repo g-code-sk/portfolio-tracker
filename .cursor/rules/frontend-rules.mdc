@@ -27,6 +27,11 @@ Frontend structure under `/frontend`:
 - Use Pinia for global state.
 - Create typed API clients under `frontend/src/lib/api`.
 - No untyped JSON — define TS interfaces that match backend Spatie Data classes.
+- Use component - composer - api structure
+    - api file should contain the request, with specific return type
+    - composer should contain any data and mainly error handling
+    - component should only check if success flag is set
+- for fetching data use "fetch" word in functions
 
 ## Routing
 
