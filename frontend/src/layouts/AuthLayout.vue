@@ -9,7 +9,7 @@
                 <Sidebar />
 
                 <!-- Main Content Area -->
-                <main class="relative z-10 ml-64 min-h-[calc(100vh-72px)] flex-1 bg-gray-100 pt-[72px]">
+                <main class="relative z-10 ml-64 min-h-[calc(100vh-72px)] flex-1 bg-gray-100 pt-[56px]">
                     <slot />
                 </main>
             </div>
