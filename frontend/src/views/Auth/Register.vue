@@ -28,8 +28,6 @@
                             <a href="#" class="font-medium text-blue-600 transition-colors hover:text-blue-700">Privacy Policy</a>
                         </Checkbox>
 
-                        {{ values }}
-
                         <Button type="submit" color="primary" size="lg" :loading="isLoading" class="w-full">
                             {{ isLoading ? '' : 'Create Account' }}
                         </Button>
@@ -51,36 +49,37 @@
 </template>
 
 <script setup lang="ts">
-import Button from '@/components/ui/Button.vue';
-import Checkbox from '@/components/ui/Checkbox.vue';
-import Input from '@/components/ui/Input.vue';
-import Logo from '@/components/ui/Logo.vue';
-import { useAuth } from '@/composables/useAuth';
-import NonAuthLayout from '@/layouts/NonAuthLayout.vue';
-import { toTypedSchema } from '@vee-validate/zod';
-import { useForm } from 'vee-validate';
-import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
-import { z } from 'zod';
+import Button from '@/components/ui/Button.vue'
+import Checkbox from '@/components/ui/Checkbox.vue'
+import Input from '@/components/ui/Input.vue'
+import Logo from '@/components/ui/Logo.vue'
+import { useAuth } from '@/composables/useAuth'
+import NonAuthLayout from '@/layouts/NonAuthLayout.vue'
+import { emailRule, passwordRule } from '@/lib/validation/auth-rules'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
+import { z } from 'zod'
 
-const router = useRouter();
-const { register, isLoading } = useAuth();
-const toast = useToast();
+const router = useRouter()
+const { register, isLoading } = useAuth()
+const toast = useToast()
 
 const registerSchema = toTypedSchema(
     z
         .object({
             name: z.string().min(1, 'Full name is required.'),
-            email: z.string().email('Enter a valid email address.'),
-            password: z.string().min(8, 'Password must be at least 8 characters long.'),
-            confirmPassword: z.string().min(8, 'Please confirm your password.'),
+            email: emailRule(),
+            password: passwordRule(),
+            confirmPassword: passwordRule(8, 'Please confirm your password.'),
             acceptTerms: z.boolean().refine((value) => value === true, 'You must accept the Terms and Conditions.'),
         })
         .refine((data) => data.password === data.confirmPassword, {
             message: 'Passwords do not match.',
             path: ['confirmPassword'],
         }),
-);
+)
 
 const { handleSubmit, values } = useForm({
     validationSchema: registerSchema,
@@ -91,7 +90,7 @@ const { handleSubmit, values } = useForm({
         confirmPassword: '',
         acceptTerms: false,
     },
-});
+})
 
 const onSubmit = handleSubmit(async (values) => {
     const result = await register({
@@ -99,23 +98,14 @@ const onSubmit = handleSubmit(async (values) => {
         email: values.email,
         password: values.password,
         password_confirmation: values.confirmPassword,
-    });
+    })
 
     if (result.success) {
-        toast.success('Account created successfully! Redirecting...');
-        setTimeout(() => {
-            router.push('/app/dashboard');
-        }, 1500);
-        return;
+        toast.success('Account created successfully!')
+        router.push('/dashboard')
+        return
     }
 
-    if (result.errors) {
-        const errors = result.errors as Record<string, string[]>;
-        const firstError = Object.values(errors)[0]?.[0];
-        toast.error(firstError || result.error || 'Failed to create account. Please try again.');
-        return;
-    }
-
-    toast.error(result.error || 'Failed to create account. Please try again.');
-});
+    toast.error(result.message)
+})
 </script>

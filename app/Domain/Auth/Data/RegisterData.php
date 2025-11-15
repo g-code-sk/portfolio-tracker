@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data\Auth;
+namespace App\Domain\Auth\Data;
 
 use Spatie\LaravelData\Attributes\Validation\Email;
 use Spatie\LaravelData\Attributes\Validation\Max;

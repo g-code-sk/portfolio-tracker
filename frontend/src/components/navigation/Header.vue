@@ -24,16 +24,28 @@
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '@/composables/useAuth';
-import { computed } from 'vue';
+import { useAuth } from '@/composables/useAuth'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 
-const { user, logout } = useAuth();
+const { user, logout } = useAuth()
+const toast = useToast()
+const router = useRouter()
 
 const userInitial = computed(() => {
-    return user.value?.name?.charAt(0).toUpperCase() || 'U';
-});
+    return user.value?.name?.charAt(0).toUpperCase() || 'U'
+})
 
 const handleLogout = async () => {
-    await logout();
-};
+    const result = await logout()
+
+    if (result.success) {
+        toast.success(result.message)
+        router.push('/login')
+        return
+    }
+
+    toast.error(result.message)
+}
 </script>

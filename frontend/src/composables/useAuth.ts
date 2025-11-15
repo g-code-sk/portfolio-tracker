@@ -1,113 +1,118 @@
-import { login as apiLogin, logout as apiLogout, register as apiRegister, getCurrentUser } from '@/lib/api/auth-api';
-import { getStoredToken } from '@/lib/auth-token';
-import type { AuthActionResponse, LoginData, LogoutActionResult, RegisterData, User } from '@/lib/types/auth-types';
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { login as apiLogin, logout as apiLogout, register as apiRegister, getCurrentUser } from '@/lib/api/auth-api'
+import { getStoredToken } from '@/lib/auth-token'
+import type { AuthActionResponse, LoginData as LoginPayloadData, LogoutActionResult, RegisterData as RegisterPayloadData, User } from '@/lib/types/auth-types'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const user = ref<User | null>(null);
-const isLoading = ref(false);
-const isInitialized = ref(false);
+const user = ref<User | null>(null)
+const isLoading = ref(false)
+const isInitialized = ref(false)
 
 export function useAuth() {
-    const router = useRouter();
+    const router = useRouter()
 
-    const isAuthenticated = computed(() => user.value !== null);
+    const isAuthenticated = computed(() => user.value !== null)
 
     const initAuth = async (): Promise<void> => {
-        if (isInitialized.value) return;
+        if (isInitialized.value) return
 
         // Check if token exists first
-        const token = getStoredToken();
+        const token = getStoredToken()
 
         if (!token) {
-            isInitialized.value = true;
-            return;
+            isInitialized.value = true
+            return
         }
 
-        isLoading.value = true;
+        isLoading.value = true
 
         try {
-            const currentUser = await getCurrentUser();
-            user.value = currentUser;
+            const currentUser = await getCurrentUser()
+            user.value = currentUser
         } catch (error) {
-            user.value = null;
+            user.value = null
         } finally {
-            isLoading.value = false;
-            isInitialized.value = true;
+            isLoading.value = false
+            isInitialized.value = true
         }
-    };
+    }
 
-    const login = async (credentials: LoginData): Promise<AuthActionResponse> => {
-        isLoading.value = true;
+    const login = async (credentials: LoginPayloadData): Promise<AuthActionResponse> => {
+        isLoading.value = true
 
         try {
-            const response = await apiLogin(credentials);
-            user.value = response.user;
+            const response = await apiLogin(credentials)
+            user.value = response.user
+
             return {
                 success: true,
                 user: response.user,
-                error: null,
+                message: null,
                 errors: null,
-            };
+            }
         } catch (error: any) {
-            const message = error.response?.data?.message || 'Login failed. Please try again.';
-            const errors = (error.response?.data?.errors as Record<string, string[]> | undefined) ?? null;
+            const message = error.response?.data?.message || 'Login failed. Please try again.'
+            const errors = (error.response?.data?.errors as Record<string, string[]> | undefined) ?? null
+
             return {
                 success: false,
                 user: null,
-                error: message,
+                message: message,
                 errors,
-            };
+            }
         } finally {
-            isLoading.value = false;
+            isLoading.value = false
         }
-    };
+    }
 
-    const register = async (data: RegisterData): Promise<AuthActionResponse> => {
-        isLoading.value = true;
+    const register = async (data: RegisterPayloadData): Promise<AuthActionResponse> => {
+        isLoading.value = true
+
         try {
-            const response = await apiRegister(data);
-            user.value = response.user;
+            const response = await apiRegister(data)
+            user.value = response.user
+
             return {
                 success: true,
                 user: response.user,
-                error: null,
+                message: null,
                 errors: null,
-            };
+            }
         } catch (error: any) {
-            const message = error.response?.data?.message || 'Registration failed. Please try again.';
-            const errors = (error.response?.data?.errors as Record<string, string[]> | undefined) ?? null;
+            const message = error.response?.data?.message || 'Registration failed. Please try again.'
+            const errors = (error.response?.data?.errors as Record<string, string[]> | undefined) ?? null
+
             return {
                 success: false,
                 user: null,
-                error: message,
+                message: message,
                 errors,
-            };
+            }
         } finally {
-            isLoading.value = false;
+            isLoading.value = false
         }
-    };
+    }
 
     const logout = async (): Promise<LogoutActionResult> => {
-        isLoading.value = true;
+        isLoading.value = true
+
         try {
-            await apiLogout();
-            user.value = null;
-            router.push('/login');
+            await apiLogout()
+            user.value = null
+
             return {
                 success: true,
-                error: null,
-            };
+                message: 'Logged out successfully',
+            }
         } catch (error: any) {
-            const message = error.response?.data?.message || 'Logout failed. Please try again.';
             return {
                 success: false,
-                error: message,
-            };
+                message: error.response?.data?.message || 'Logout failed. Please try again.',
+            }
         } finally {
-            isLoading.value = false;
+            isLoading.value = false
         }
-    };
+    }
 
     return {
         user,
@@ -118,5 +123,5 @@ export function useAuth() {
         register,
         logout,
         initAuth,
-    };
+    }
 }

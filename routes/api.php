@@ -1,7 +1,7 @@
 <?php
 
+use App\Domain\Auth\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TestController;
 
 // Public routes (token-based authentication)
