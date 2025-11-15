@@ -1,8 +1,10 @@
+import App from '@/App.vue';
+import router from '@/router';
 import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
 
 import { IonicVue } from '@ionic/vue';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -32,15 +34,32 @@ import '@ionic/vue/css/text-transformation.css';
 // import '@ionic/vue/css/palettes/dark.system.css';
 
 /* Theme variables */
+import '@/assets/tailwind.css';
+import '@/theme/variables.css';
 import 'material-icons/iconfont/material-icons.css';
-import './assets/tailwind.css';
-import './theme/variables.css';
 
 const app = createApp(App)
     .use(IonicVue, {
         mode: 'ios', // or 'md' for material design
     })
-    .use(router);
+    .use(router)
+    .use(Toast, {
+        transition: 'Vue-Toastification__bounce',
+        maxToasts: 5,
+        newestOnTop: true,
+        position: 'top-right',
+        timeout: 5000,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: false,
+        closeButton: 'button',
+        icon: true,
+        rtl: false,
+    });
 
 router.isReady().then(() => {
     app.mount('#app');

@@ -1,9 +1,24 @@
 <template>
-    <div class="min-h-screen bg-gray-100">
-        <router-view></router-view>
-    </div>
+    <ion-page>
+        <ion-content>
+            <div class="flex min-h-screen">
+                <!-- Top Navbar -->
+                <Header />
+
+                <!-- Left Sidebar -->
+                <Sidebar />
+
+                <!-- Main Content Area -->
+                <main class="relative z-10 ml-64 min-h-[calc(100vh-72px)] flex-1 bg-gray-100 pt-[72px]">
+                    <slot />
+                </main>
+            </div>
+        </ion-content>
+    </ion-page>
 </template>
 
 <script setup lang="ts">
-// Clean layout without header and sidebar for authentication pages
+import Header from '@/components/navigation/Header.vue'
+import Sidebar from '@/components/navigation/Sidebar.vue'
+import { IonContent, IonPage } from '@ionic/vue'
 </script>
