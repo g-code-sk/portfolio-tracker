@@ -1,0 +1,51 @@
+---
+alwaysApply: true
+---
+
+# ==========================================================
+
+# Backend Architecture Rules (Laravel 12)
+
+# ==========================================================
+
+## Domain Architecture
+
+Rules:
+
+- **All model-related architecture (controllers, data, jobs, actions, resources, etc.) MUST be placed inside `app/Domain/{Feature}`.**
+- **Eloquent Models remain in `app/Models` only.**
+- Do NOT create models inside `App/Domain`.
+
+## Validation & Data Rules
+
+- Must use **Spatie Data** classes for:
+    - Request validation
+    - Internal typed communication
+- Never use:
+    - Generic PHP arrays
+    - Associative arrays
+    - `stdClass` / untyped objects
+- Everything must be represented using Spatie Data or other typed classes.
+
+## API Resource / Response Format
+
+All API responses must use:
+
+- `JsonResource` classes
+- With a consistent envelope:
+
+{
+“data”: …,
+“message”: string | null
+}
+
+## Controllers
+
+- Must be placed in `App\Domain\{Feature}\Controllers`
+- Must use constructor injection
+- Keep controllers thin—business logic belongs in Actions/Services
+
+## Actions & Services
+
+- Use `Action` classes in each Domain feature
+- Use clear input/output Data objects (Spatie Data)

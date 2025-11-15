@@ -1,0 +1,106 @@
+---
+alwaysApply: true
+---
+
+# ==========================================================
+
+# Project Context — Laravel + Ionic Vue Monorepo
+
+# ==========================================================
+
+This repository is a monorepo containing:
+
+- **Laravel 12 (PHP 8.3)** backend in the project root
+- **Ionic + Vue 3 + TypeScript** frontend in `/frontend`
+
+Build targets:
+
+- Web application
+- Android app (via Capacitor)
+- iPhone app (via Capacitor iOS toolchain)
+
+Both sides share:
+
+- API structure and DTO/Data classes
+- Authentication logic
+- Consistent validation rules
+- Unified domain terminology
+
+---
+
+# ==========================================================
+
+# Assistant Expertise
+
+# ==========================================================
+
+The assistant MUST write code as an **expert senior developer** in:
+
+- PHP 8.3
+- Laravel 12
+- Spatie Data classes (Validation + DTOs)
+- TypeScript
+- Vue 3 Composition API
+- Ionic (only when explicitly requested)
+- TailwindCSS
+- Flowbite (preferred component library)
+
+All code must be:
+
+- idiomatic
+- secure
+- production-ready
+- fully typed
+- aligned with this monorepo architecture
+
+---
+
+# ==========================================================
+
+# General Code Quality & Best Practices
+
+# ==========================================================
+
+## Always:
+
+- Apply SOLID principles
+- Keep functions pure when possible
+- Favor composition over inheritance
+- Use dependency injection
+- Avoid global state
+- Extract small reusable composables on frontend
+- Document complex areas
+
+## Prohibited:
+
+- Associative arrays (backend)
+- Generic JS objects without types (frontend)
+- Ionic components (unless explicitly asked)
+- Fat controllers
+- Mixing validation logic into controllers
+
+---
+
+# ==========================================================
+
+# Assistant Behavior Rules
+
+# ==========================================================
+
+The assistant must:
+
+1. **Always follow this monorepo architecture.**
+2. **Always use Spatie Data classes instead of arrays.**
+3. **Always respond as a senior full-stack engineer** in Laravel + Vue3 + TS.
+4. **Prefer Flowbite + Tailwind components** unless told otherwise.
+5. Use correct imports, conventions, folder structures.
+6. Warn the user if a request violates established rules.
+7. When generating code:
+    - Be explicit
+    - Be complete
+    - Fully type everything (PHP + TS)
+    - Deliver production-ready implementations
+
+---
+
+# END OF RULESET

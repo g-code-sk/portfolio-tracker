@@ -1,0 +1,60 @@
+---
+alwaysApply: true
+---
+
+# ==========================================================
+
+# Frontend Architecture Rules (Vue 3 + TS + Ionic)
+
+# ==========================================================
+
+Frontend structure under `/frontend`:
+
+## Component + Styling Rules
+
+- **Do NOT use Ionic UI components unless explicitly asked.**
+- Default to **TailwindCSS + Flowbite** for UI components.
+- Keep styling simple, utility-first, consistent.
+
+## Vue Rules
+
+- Use `<script setup lang="ts">`.
+- Use the Composition API exclusively.
+- Use Pinia for global state.
+- Create typed API clients under `frontend/src/lib/api`.
+- No untyped JSON — define TS interfaces that match backend Spatie Data classes.
+
+## Routing
+
+- Use lazy-loaded routes
+- Add typed route params
+- Protect routes with guard composables
+
+## Capacitor (Android + iPhone)
+
+- All device-specific APIs go under `/frontend/src/device/`
+- Avoid DOM/browser-only APIs in core logic
+- Keep the core of the app platform-agnostic
+
+---
+
+# ==========================================================
+
+# API Contract — Backend <-> Frontend
+
+# ==========================================================
+
+The backend returns **Spatie Data → JsonResource** → frontend types.
+
+### Standard Response Format
+
+{
+“data”: T,
+“message”: string | null
+}
+
+### Frontend Rules
+
+- Always map API responses to TS interfaces/types.
+- Never assume backend structure outside documented Data classes.
+- API methods must return typed results, not `any`.
