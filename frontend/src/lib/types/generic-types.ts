@@ -1,4 +1,4 @@
-export type SidebarNavItem = {
+export interface SidebarNavItem {
     label: string
     icon: string
     to?: string

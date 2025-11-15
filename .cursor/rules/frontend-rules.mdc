@@ -15,6 +15,10 @@ Frontend structure under `/frontend`:
 - **Do NOT use Ionic UI components unless explicitly asked.**
 - Default to **TailwindCSS + Flowbite** for UI components.
 - Keep styling simple, utility-first, consistent.
+- Use **vee-validate + zod** for frontend validation
+- Use **vue-toastification** for notifications
+- All errors must be handled gracefully by notifying the user
+- Use interfaces instead of types
 
 ## Vue Rules
 
