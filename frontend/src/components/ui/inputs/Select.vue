@@ -5,15 +5,7 @@
         </label>
 
         <div class="relative">
-            <select
-                :id="computedId"
-                :name="name"
-                :disabled="disabled"
-                :class="selectClasses"
-                :value="currentValue"
-                @change="handleChange"
-                @blur="handleBlur"
-            >
+            <select :id="computedId" :name="name" :disabled="disabled" :class="selectClasses" :value="currentValue" @change="handleChange" @blur="handleBlur">
                 <option v-for="option in options" :key="option.value" :value="option.value">
                     {{ option.label }}
                 </option>
@@ -32,13 +24,9 @@
 </template>
 
 <script setup lang="ts">
+import { SelectOption } from '@/lib/types/generic-types'
 import { useField } from 'vee-validate'
 import { computed } from 'vue'
-
-export interface SelectOption {
-    label: string
-    value: string
-}
 
 const props = withDefaults(
     defineProps<{
@@ -114,4 +102,3 @@ const showError = computed(() => {
     return false
 })
 </script>
-

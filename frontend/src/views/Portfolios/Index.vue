@@ -20,7 +20,7 @@
         <Modal v-model="isAddPortfolioModalOpen" title="Create Portfolio" :show-cancel-button="true" :disabled="isSubmitting">
             <form :id="createPortfolioFormId" class="space-y-4" @submit.prevent="submitCreatePortfolio">
                 <Input name="name" label="Portfolio Name" placeholder="e.g., Retirement Fund" autocomplete="off" />
-                <Select name="currency" label="Base Currency" :options="currencyOptions" />
+                <CurrencySelect name="currencyId" />
             </form>
 
             <template #footer>
@@ -34,9 +34,9 @@
 
 <script setup lang="ts">
 import Button from '@/components/ui/Button.vue'
-import Input from '@/components/ui/Input.vue'
+import CurrencySelect from '@/components/ui/inputs/CurrencySelect.vue'
+import Input from '@/components/ui/inputs/Input.vue'
 import Modal from '@/components/ui/Modal.vue'
-import Select, { SelectOption } from '@/components/ui/Select.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { stringRequiredRule } from '@/lib/validation/rules'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -49,10 +49,7 @@ const createPortfolioFormId = 'create-portfolio-form'
 const createPortfolioSchema = toTypedSchema(
     z.object({
         name: stringRequiredRule().max(80, 'Keep the name under 80 characters'),
-        currency: z
-            .string({ required_error: 'Base currency is required' })
-            .transform((value) => value.trim().toUpperCase())
-            .refine((value) => ['USD', 'EUR'].includes(value), 'Currency must be USD or EUR (for now)'),
+        currencyId: z.number().min(1, 'Base currency is required'),
     }),
 )
 
@@ -60,16 +57,11 @@ const { handleSubmit, isSubmitting, meta, resetForm } = useForm({
     validationSchema: createPortfolioSchema,
     initialValues: {
         name: '',
-        currency: 'USD',
+        currencyId: undefined,
     },
 })
 
 const isAddPortfolioModalOpen = ref(false)
-
-const currencyOptions: SelectOption[] = [
-    { label: 'US Dollar (USD)', value: 'USD' },
-    { label: 'Euro (EUR)', value: 'EUR' },
-]
 
 const submitCreatePortfolio = handleSubmit(async (values) => {
     console.log('create portfolio payload', values)

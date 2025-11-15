@@ -4,3 +4,8 @@ export interface SidebarNavItem {
     to?: string
     href?: string
 }
+
+export interface SelectOption {
+    label: string
+    value: string | number
+}

@@ -2,15 +2,12 @@ import { login as apiLogin, logout as apiLogout, register as apiRegister, getCur
 import { getStoredToken } from '@/lib/auth-token'
 import type { AuthActionResponse, LoginData as LoginPayloadData, LogoutActionResult, RegisterData as RegisterPayloadData, User } from '@/lib/types/auth-types'
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 const user = ref<User | null>(null)
 const isLoading = ref(false)
 const isInitialized = ref(false)
 
 export function useAuth() {
-    const router = useRouter()
-
     const isAuthenticated = computed(() => user.value !== null)
 
     const initAuth = async (): Promise<void> => {

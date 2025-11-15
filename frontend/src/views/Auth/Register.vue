@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import Button from '@/components/ui/Button.vue'
 import Checkbox from '@/components/ui/Checkbox.vue'
-import Input from '@/components/ui/Input.vue'
+import Input from '@/components/ui/inputs/Input.vue'
 import Logo from '@/components/ui/Logo.vue'
 import { useAuth } from '@/composables/useAuth'
 import NonAuthLayout from '@/layouts/NonAuthLayout.vue'
