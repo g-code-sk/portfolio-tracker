@@ -17,16 +17,10 @@
 <script setup lang="ts">
 import SidebarNavList from '@/components/navigation/SidebarNavList.vue'
 import SidebarSectionHeading from '@/components/navigation/SidebarSectionHeading.vue'
+import { SidebarNavItem } from '@/lib/types/generic-types'
 import { barChartOutline, briefcaseOutline, cashOutline, documentTextOutline, homeOutline, settingsOutline } from 'ionicons/icons'
 
-type NavListItem = {
-    label: string
-    icon: string
-    to?: string
-    href?: string
-}
-
-const mainMenuItems: NavListItem[] = [
+const mainMenuItems: SidebarNavItem[] = [
     {
         label: 'Dashboard',
         icon: homeOutline,
@@ -49,7 +43,7 @@ const mainMenuItems: NavListItem[] = [
     },
 ]
 
-const toolsItems: NavListItem[] = [
+const toolsItems: SidebarNavItem[] = [
     {
         label: 'Reports',
         icon: documentTextOutline,
