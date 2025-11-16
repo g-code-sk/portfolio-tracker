@@ -1,5 +1,6 @@
 <template>
-    <div class="grid gap-4">
+    <UserPortfolioListSkeleton v-if="isLoading" />
+    <div v-else class="grid gap-4">
         <div
             v-for="portfolio in portfolios"
             :key="portfolio.id"
@@ -26,11 +27,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import UserPortfolioListSkeleton from '@/components/user/portfolios/UserPortfolioListSkeleton.vue'
 import type { UserPortfolioResource } from '@/lib/types/portfolio-types'
 
-const props = defineProps<{
-    portfolios: UserPortfolioResource[]
-}>()
+const props = withDefaults(
+    defineProps<{
+        portfolios: UserPortfolioResource[]
+        isLoading?: boolean
+    }>(),
+    {
+        isLoading: false,
+    },
+)
 
 const formatCurrency = (value: number, currency: string) =>
     new Intl.NumberFormat('en-US', {

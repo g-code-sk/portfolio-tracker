@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // User routes
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('/portfolios', [UserPortfolioController::class, 'index'])->name('portfolios.index');
+        Route::post('/portfolios', [UserPortfolioController::class, 'store'])->name('portfolios.store');
     });
 
     // Device/session management

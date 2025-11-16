@@ -25,7 +25,6 @@ Rules:
     - Generic PHP arrays
     - Associative arrays
     - `stdClass` / untyped objects
-- Everything must be represented using Spatie Data or other typed classes.
 
 ## API Resource / Response Format
 
@@ -43,7 +42,6 @@ All API responses must use:
 
 - Must be placed in `App\Domain\{Feature}\Controllers`
 - Must use constructor injection
-- Keep controllers thin—business logic belongs in Actions/Services
 
 ## Actions & Services
 

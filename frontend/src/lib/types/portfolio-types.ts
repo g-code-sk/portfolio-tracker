@@ -6,3 +6,8 @@ export interface UserPortfolioResource {
     changePct: number
     assetCount: number
 }
+
+export interface CreateUserPortfolioPayloadData {
+    name: string
+    currency_id: number
+}

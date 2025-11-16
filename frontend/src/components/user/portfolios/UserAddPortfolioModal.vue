@@ -31,8 +31,11 @@ import { ref } from 'vue'
 import { z } from 'zod'
 
 import { useUserPortfolios } from '@/composables/useUserPortfolios'
+import { createUserPortfolioApi } from '@/lib/api/portfolio-api'
+import { useToast } from 'vue-toastification'
 
-const { refreshPortfolios } = useUserPortfolios()
+const { refreshUserPortfolios: refreshPortfolios } = useUserPortfolios()
+const toast = useToast()
 
 const createPortfolioFormId = 'create-portfolio-form'
 const isModalOpen = ref(false)
@@ -53,9 +56,20 @@ const { handleSubmit, isSubmitting, meta, resetForm } = useForm({
 })
 
 const submitCreatePortfolio = handleSubmit(async (values) => {
-    console.log('create portfolio payload', values)
-    await refreshPortfolios()
-    isModalOpen.value = false
-    resetForm()
+    try {
+        await createUserPortfolioApi({
+            name: values.name,
+            currency_id: values.currencyId,
+        })
+
+        await refreshPortfolios()
+
+        isModalOpen.value = false
+        resetForm()
+        toast.success('Portfolio created successfully')
+    } catch (error) {
+        toast.error('Failed to create portfolio. Please try again.')
+        console.error(error)
+    }
 })
 </script>

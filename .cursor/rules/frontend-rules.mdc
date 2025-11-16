@@ -29,9 +29,10 @@ Frontend structure under `/frontend`:
 - No untyped JSON — define TS interfaces that match backend Spatie Data classes.
 - Use component - composer - api structure
     - api file should contain the request, with specific return type
-    - composer should contain any data and mainly error handling
+    - composer should contain any data and mainly error handling (only if it makes sense and the data needs to be used between components)
     - component should only check if success flag is set
-- for fetching data use "fetch" word in functions
+    - refer to auth-api.ts, Register.vue ans useAuth.ts
+- for fetching data use "fetch" word in functions instead of get or load
 
 ## Routing
 
@@ -53,7 +54,7 @@ Frontend structure under `/frontend`:
 
 # ==========================================================
 
-The backend returns **Spatie Data → JsonResource** → frontend types.
+The backend returns **JsonResource** → frontend types.
 
 ### Standard Response Format
 
@@ -64,6 +65,6 @@ The backend returns **Spatie Data → JsonResource** → frontend types.
 
 ### Frontend Rules
 
-- Always map API responses to TS interfaces/types.
+- Always map API responses to TS interfaces.
 - Never assume backend structure outside documented Data classes.
 - API methods must return typed results, not `any`.

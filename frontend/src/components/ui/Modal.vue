@@ -4,13 +4,18 @@
             enter-active-class="duration-200 ease-out"
             enter-from-class="opacity-0"
             enter-to-class="opacity-100"
-            leave-active-class="duration-150 ease-in"
+            leave-active-class="duration-200 ease-in"
             leave-from-class="opacity-100"
             leave-to-class="opacity-0"
+            @enter="onEnter"
+            @leave="onLeave"
         >
             <div v-if="modelValue" class="fixed inset-0 z-50 flex items-center justify-center">
-                <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" @click="handleBackdropClick"></div>
-
+                <div
+                    class="absolute inset-0 bg-gray-900/60 transition-[backdrop-filter] duration-1000 ease-out"
+                    :style="{ backdropFilter: `blur(${backdropBlur}px)` }"
+                    @click="handleBackdropClick"
+                ></div>
                 <div class="relative z-10 w-full max-w-lg rounded-2xl bg-white shadow-2xl ring-1 ring-black/5" role="dialog" aria-modal="true">
                     <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
                         <div class="text-lg font-semibold text-gray-900">{{ title }}</div>
@@ -49,7 +54,7 @@
 import Button from '@/components/ui/Button.vue'
 import { IonIcon } from '@ionic/vue'
 import { closeOutline } from 'ionicons/icons'
-import { onBeforeUnmount, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 
 const modelValue = defineModel<boolean>({
     default: false,
@@ -74,6 +79,22 @@ const props = withDefaults(
 const emit = defineEmits<{
     close: []
 }>()
+
+const backdropBlur = ref(0)
+
+const onEnter = (el: Element) => {
+    backdropBlur.value = 0
+    // Use double requestAnimationFrame to ensure the element is rendered with blur(0) before transitioning
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            backdropBlur.value = 2
+        })
+    })
+}
+
+const onLeave = () => {
+    backdropBlur.value = 0
+}
 
 const close = () => {
     modelValue.value = false

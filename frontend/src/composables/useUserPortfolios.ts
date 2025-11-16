@@ -1,4 +1,4 @@
-import { fetchPortfoliosApi } from '@/lib/api/portfolio-api'
+import { fetchUserPortfoliosApi } from '@/lib/api/portfolio-api'
 import type { UserPortfolioResource } from '@/lib/types/portfolio-types'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
@@ -8,7 +8,7 @@ const isLoading = ref(false)
 const isLoaded = ref(false)
 const toast = useToast()
 
-async function fetchPortfolios(force = false): Promise<void> {
+async function fetchUserPortfolios(force = false): Promise<void> {
     if (isLoading.value) {
         return
     }
@@ -19,7 +19,7 @@ async function fetchPortfolios(force = false): Promise<void> {
 
     try {
         isLoading.value = true
-        portfolios.value = await fetchPortfoliosApi()
+        portfolios.value = await fetchUserPortfoliosApi()
         isLoaded.value = true
     } catch (error) {
         toast.error('Unable to load portfolios. Please try again.')
@@ -29,8 +29,8 @@ async function fetchPortfolios(force = false): Promise<void> {
     }
 }
 
-async function refreshPortfolios(): Promise<void> {
-    await fetchPortfolios(true)
+async function refreshUserPortfolios(): Promise<void> {
+    await fetchUserPortfolios(true)
 }
 
 export function useUserPortfolios() {
@@ -38,7 +38,7 @@ export function useUserPortfolios() {
         portfolios,
         isLoading,
         isLoaded,
-        fetchPortfolios,
-        refreshPortfolios,
+        fetchUserPortfolios,
+        refreshUserPortfolios,
     }
 }
