@@ -31,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Portfolios/Index.vue'),
         meta: { requiresAuth: true },
     },
+    {
+        path: '/portfolios/:id',
+        component: () => import('@/views/Portfolios/Show.vue'),
+        meta: { requiresAuth: true },
+    },
 ]
 
 const router = createRouter({

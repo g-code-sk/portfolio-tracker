@@ -5,23 +5,25 @@
                 <div>
                     <h1 class="mb-2 text-3xl font-bold text-gray-900">Portfolios</h1>
                 </div>
-                <UserAddPortfolioModal />
+                <div class="flex gap-3">
+                    <UserAddTransactionButton />
+                    <UserAddPortfolioModal />
+                </div>
             </div>
 
             <div class="mt-8">
                 <UserPortfolioList v-if="portfolios.length || isLoading" :portfolios="portfolios" :is-loading="isLoading" />
-                <div v-else class="rounded-xl border border-dashed border-gray-200 bg-white p-8 text-center">
-                    <p class="text-lg font-semibold text-gray-900">No portfolios yet</p>
-                    <p class="mt-2 text-sm text-gray-500">Create your first portfolio to start tracking assets.</p>
-                </div>
+                <EmptyList v-else title="No portfolios yet" description="Create your first portfolio to start tracking assets." />
             </div>
         </div>
     </AuthLayout>
 </template>
 
 <script setup lang="ts">
+import EmptyList from '@/components/ui/EmptyList.vue'
 import UserAddPortfolioModal from '@/components/user/portfolios/UserAddPortfolioModal.vue'
 import UserPortfolioList from '@/components/user/portfolios/UserPortfolioList.vue'
+import UserAddTransactionButton from '@/components/user/transactions/UserAddTransactionModal.vue'
 import { useUserPortfolios } from '@/composables/useUserPortfolios'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { onMounted } from 'vue'

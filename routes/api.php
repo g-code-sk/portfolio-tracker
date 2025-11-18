@@ -2,6 +2,7 @@
 
 use App\Domain\Auth\Controllers\Api\AuthController;
 use App\Domain\Currency\Controllers\Api\CurrencyController;
+use App\Domain\Finnhub\Controllers\Api\FinnhubStockSearchController;
 use App\Domain\Portfolio\Controllers\Api\UserPortfolioController;
 use App\Http\Controllers\Api\TestController;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +21,14 @@ Route::middleware('auth:sanctum')->group(function () {
     // Currencies
     Route::get('/currencies', [CurrencyController::class, 'index']);
 
+    // Stock search
+    Route::get('/finnhub/stocks/search', [FinnhubStockSearchController::class, 'search']);
+
     // User routes
     Route::prefix('user')->as('user.')->group(function () {
         Route::get('/portfolios', [UserPortfolioController::class, 'index'])->name('portfolios.index');
         Route::post('/portfolios', [UserPortfolioController::class, 'store'])->name('portfolios.store');
+        Route::get('/portfolios/{portfolio}', [UserPortfolioController::class, 'show'])->name('portfolios.show');
     });
 
     // Device/session management

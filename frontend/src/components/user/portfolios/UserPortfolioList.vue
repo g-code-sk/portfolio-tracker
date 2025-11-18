@@ -1,10 +1,11 @@
 <template>
     <UserPortfolioListSkeleton v-if="isLoading" />
     <div v-else class="grid gap-4">
-        <div
+        <router-link
             v-for="portfolio in portfolios"
             :key="portfolio.id"
-            class="hover:border-primary-200 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+            :to="`/portfolios/${portfolio.id}`"
+            class="hover:border-primary-200 rounded-xl border border-gray-200 bg-white p-5 no-underline shadow-sm transition hover:shadow-md"
         >
             <div class="flex items-center justify-between">
                 <div>
@@ -20,7 +21,7 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </router-link>
     </div>
 </template>
 

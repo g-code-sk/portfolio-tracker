@@ -11,3 +11,8 @@ export async function createUserPortfolioApi(data: CreateUserPortfolioPayloadDat
     const response = await api.post<ApiResponse<UserPortfolioResource>>('/user/portfolios', data)
     return response.data.data
 }
+
+export async function fetchUserPortfolioApi(id: number): Promise<UserPortfolioResource> {
+    const response = await api.get<ApiResponse<UserPortfolioResource>>(`/user/portfolios/${id}`)
+    return response.data.data
+}

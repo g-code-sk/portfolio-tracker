@@ -37,4 +37,9 @@ final class UserPortfolioController
         return (new UserPortfolioResource($portfolio))
             ->additional(['message' => 'Portfolio created successfully']);
     }
+
+    public function show(Request $request, Portfolio $portfolio): JsonResource
+    {
+        return new UserPortfolioResource($portfolio);
+    }
 }

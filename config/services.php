@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'finnhub' => [
+        'token' => env('FINNHUB_API_TOKEN'),
+    ],
+
 ];
