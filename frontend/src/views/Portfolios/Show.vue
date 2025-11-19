@@ -1,5 +1,9 @@
 <template>
-    <AuthLayout>
+    <AuthLayout :breadcrumb-items="breadcrumbItems">
+        <div>
+            <div>test</div>
+        </div>
+
         <div class="p-8">
             <div v-if="isLoading" class="flex items-center justify-center py-12">
                 <div class="border-t-primary-600 h-8 w-8 animate-spin rounded-full border-4 border-gray-200"></div>
@@ -16,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -28,6 +32,8 @@ const route = useRoute()
 const toast = useToast()
 
 const portfolio = ref<UserPortfolioResource | null>(null)
+const breadcrumbItems = computed(() => [{ label: 'Portfolios', to: '/portfolios' }, { label: 'Portfolio' }])
+
 const isLoading = ref(false)
 
 onMounted(async () => {

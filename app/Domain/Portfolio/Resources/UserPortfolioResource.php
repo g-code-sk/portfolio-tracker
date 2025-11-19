@@ -29,9 +29,9 @@ final class UserPortfolioResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'baseCurrency' => $this->resource->currency->code,
-            'totalValue' => fake()->randomFloat(2, 1000, 1000000), // $this->resource->totalValue,
-            'changePct' => fake()->randomFloat(2, -100, 100), // $this->resource->changePct,
-            'assetCount' => fake()->numberBetween(1, 100), // $this->resource->assetCount,
+            'totalValue' => 0, // $this->resource->totalValue,
+            'changePct' => 0, // $this->resource->changePct,
+            'assetCount' => 0, // $this->resource->assetCount,
         ];
     }
 }
