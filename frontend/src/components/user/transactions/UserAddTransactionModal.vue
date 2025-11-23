@@ -8,7 +8,7 @@
         <Modal v-model="isModalOpen" title="Add Transaction" :show-cancel-button="true" :disabled="isSubmitting">
             <form :id="createTransactionFormId" class="space-y-4" @submit.prevent="submitCreateTransaction">
                 <UserPortfolioSelect name="portfolioId" />
-                <StockSelect name="stockId" />
+                <StockSelect name="stockSymbol" />
                 <Input name="amount" label="Amount" type="number" placeholder="e.g., 10" autocomplete="off" />
                 <Input name="price" label="Price" type="number" placeholder="e.g., 150.50" autocomplete="off" />
                 <Input name="date" label="Date" type="date" autocomplete="off" />
@@ -32,7 +32,8 @@ import StockSelect from '@/components/ui/inputs/StockSelect.vue'
 import Modal from '@/components/ui/Modal.vue'
 import UserPortfolioSelect from '@/components/user/portfolios/UserPortfolioSelect.vue'
 import { useUserPortfolios } from '@/composables/useUserPortfolios'
-import { stringRequiredRule } from '@/lib/validation/rules'
+import { createUserTransactionApi } from '@/lib/api/transaction-api'
+import { minDecimalNumberRule, nonNegativeNumberRule, numberRequiredRule, stringRequiredRule } from '@/lib/validation/rules'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { computed, onMounted, ref } from 'vue'
@@ -53,20 +54,20 @@ const isModalOpen = ref(false)
 
 const createTransactionSchema = toTypedSchema(
     z.object({
-        portfolioId: z.coerce.number().min(1, 'Portfolio is required'),
-        stockId: stringRequiredRule('Stock is required'),
-        amount: z.coerce.number().min(0.01, 'Amount must be greater than 0'),
-        price: z.coerce.number().min(0.01, 'Price must be greater than 0'),
-        date: stringRequiredRule('Date is required'),
-        fee: z.preprocess((val) => (val === '' || val === undefined || val === null ? 0 : Number(val)), z.number().min(0, 'Fee must be 0 or greater')),
+        portfolioId: numberRequiredRule(),
+        stockSymbol: stringRequiredRule(),
+        amount: minDecimalNumberRule(0.00000001),
+        price: minDecimalNumberRule(0.00000001),
+        date: stringRequiredRule(),
+        fee: z.preprocess((val) => (val === '' || val === undefined || val === null ? 0 : Number(val)), nonNegativeNumberRule()),
     }),
 )
 
-const { handleSubmit, isSubmitting, meta, resetForm } = useForm({
+const { handleSubmit, isSubmitting, meta, resetForm, values } = useForm({
     validationSchema: createTransactionSchema,
     initialValues: {
         portfolioId: undefined,
-        stockId: '',
+        stockSymbol: '',
         amount: undefined,
         price: undefined,
         date: '',
@@ -82,14 +83,23 @@ const handleOpenModal = () => {
 
 const submitCreateTransaction = handleSubmit(async (values) => {
     try {
-        // TODO: Implement API call when backend is ready
-        console.log('Transaction data:', values)
+        await createUserTransactionApi({
+            portfolioId: values.portfolioId,
+            stockSymbol: values.stockSymbol,
+            amount: values.amount,
+            price: values.price,
+            date: values.date,
+            fee: values.fee,
+        })
+
+        await fetchUserPortfolios()
 
         isModalOpen.value = false
         resetForm()
         toast.success('Transaction added successfully')
-    } catch (error) {
-        toast.error('Failed to add transaction. Please try again.')
+    } catch (error: any) {
+        const errorMessage = error.response?.data?.message || 'Failed to add transaction. Please try again.'
+        toast.error(errorMessage)
         console.error(error)
     }
 })

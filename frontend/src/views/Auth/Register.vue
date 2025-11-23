@@ -56,6 +56,7 @@ import Logo from '@/components/ui/Logo.vue'
 import { useAuth } from '@/composables/useAuth'
 import NonAuthLayout from '@/layouts/NonAuthLayout.vue'
 import { emailRule, passwordRule } from '@/lib/validation/auth-rules'
+import { stringRequiredRule } from '@/lib/validation/rules'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { useRouter } from 'vue-router'
@@ -69,7 +70,7 @@ const toast = useToast()
 const registerSchema = toTypedSchema(
     z
         .object({
-            name: z.string().min(1, 'Full name is required.'),
+            name: stringRequiredRule(),
             email: emailRule(),
             password: passwordRule(),
             confirmPassword: passwordRule(8, 'Please confirm your password.'),

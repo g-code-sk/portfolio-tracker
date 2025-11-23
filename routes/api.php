@@ -4,6 +4,7 @@ use App\Domain\Auth\Controllers\Api\AuthController;
 use App\Domain\Currency\Controllers\Api\CurrencyController;
 use App\Domain\Finnhub\Controllers\Api\FinnhubStockSearchController;
 use App\Domain\Portfolio\Controllers\Api\UserPortfolioController;
+use App\Domain\Transaction\Controllers\Api\UserTransactionController;
 use App\Http\Controllers\Api\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,9 +27,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // User routes
     Route::prefix('user')->as('user.')->group(function () {
-        Route::get('/portfolios', [UserPortfolioController::class, 'index'])->name('portfolios.index');
-        Route::post('/portfolios', [UserPortfolioController::class, 'store'])->name('portfolios.store');
-        Route::get('/portfolios/{portfolio}', [UserPortfolioController::class, 'show'])->name('portfolios.show');
+        Route::prefix('portfolios')->as('portfolios.')->group(function () {
+            Route::get('/', [UserPortfolioController::class, 'index'])->name('index');
+            Route::post('/', [UserPortfolioController::class, 'store'])->name('store');
+            Route::get('/{portfolio}', [UserPortfolioController::class, 'show'])->name('show');
+        });
+
+        Route::post('/transactions', [UserTransactionController::class, 'store'])->name('transactions.store');
     });
 
     // Device/session management

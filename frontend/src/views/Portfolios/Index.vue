@@ -6,7 +6,7 @@
                     <h1 class="mb-2 text-3xl font-bold text-gray-900">Portfolios</h1>
                 </div>
                 <div class="flex gap-3">
-                    <UserAddTransactionButton />
+                    <UserAddTransactionModal />
                     <UserAddPortfolioModal />
                 </div>
             </div>
@@ -23,7 +23,7 @@
 import EmptyList from '@/components/ui/EmptyList.vue'
 import UserAddPortfolioModal from '@/components/user/portfolios/UserAddPortfolioModal.vue'
 import UserPortfolioList from '@/components/user/portfolios/UserPortfolioList.vue'
-import UserAddTransactionButton from '@/components/user/transactions/UserAddTransactionModal.vue'
+import UserAddTransactionModal from '@/components/user/transactions/UserAddTransactionModal.vue'
 import { useUserPortfolios } from '@/composables/useUserPortfolios'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { onMounted } from 'vue'
