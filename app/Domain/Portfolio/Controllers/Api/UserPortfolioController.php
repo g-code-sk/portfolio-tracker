@@ -7,17 +7,24 @@ namespace App\Domain\Portfolio\Controllers\Api;
 use App\Domain\Portfolio\Data\CreateUserPortfolioData;
 use App\Domain\Portfolio\Resources\UserPortfolioResource;
 use App\Models\Portfolio;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 final class UserPortfolioController
 {
+    use AuthorizesRequests;
+
     public function __construct() {}
 
     public function index(Request $request): JsonResource
     {
         /** @var Collection<int, Portfolio> */
-        $portfolios = $request->user()->portfolios()->with(['currency:id,code'])->orderByDesc('created_at')->get();
+        $portfolios = $request->user()
+            ->portfolios()
+            ->with(['currency:id,code'])
+            ->orderByDesc('created_at')
+            ->get();
 
         return UserPortfolioResource::collection($portfolios);
     }
@@ -40,6 +47,8 @@ final class UserPortfolioController
 
     public function show(Request $request, Portfolio $portfolio): JsonResource
     {
+        $this->authorize('view', $portfolio);
+
         return new UserPortfolioResource($portfolio);
     }
 }

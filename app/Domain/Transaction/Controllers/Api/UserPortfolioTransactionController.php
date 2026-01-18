@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Transaction\Controllers\Api;
+
+use App\Domain\Transaction\Resources\UserTransactionResource;
+use App\Models\Portfolio;
+use App\Models\Transaction;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+final class UserPortfolioTransactionController
+{
+    use AuthorizesRequests;
+
+    public function __construct() {}
+
+    public function index(Request $request, Portfolio $portfolio): JsonResource
+    {
+        $this->authorize('view', $portfolio);
+
+        $transactions = Transaction::query()
+            ->where('user_id', $request->user()->id)
+            ->where('portfolio_id', $portfolio->id)
+            ->with(['security', 'portfolio.currency'])
+            ->orderByDesc('date')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return UserTransactionResource::collection($transactions);
+    }
+}

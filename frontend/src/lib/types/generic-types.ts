@@ -14,6 +14,6 @@ export interface SelectOption {
 }
 
 export interface BreadcrumbItem {
-    label: string
+    label: string | null
     to?: RouteLocationRaw
 }

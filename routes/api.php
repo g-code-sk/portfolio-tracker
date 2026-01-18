@@ -4,8 +4,10 @@ use App\Domain\Auth\Controllers\Api\AuthController;
 use App\Domain\Currency\Controllers\Api\CurrencyController;
 use App\Domain\Finnhub\Controllers\Api\FinnhubStockSearchController;
 use App\Domain\Portfolio\Controllers\Api\UserPortfolioController;
+use App\Domain\Transaction\Controllers\Api\UserPortfolioTransactionController;
 use App\Domain\Transaction\Controllers\Api\UserTransactionController;
 use App\Http\Controllers\Api\TestController;
+use App\Models\Portfolio;
 use Illuminate\Support\Facades\Route;
 
 // Public routes (token-based authentication)
@@ -31,8 +33,10 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/', [UserPortfolioController::class, 'index'])->name('index');
             Route::post('/', [UserPortfolioController::class, 'store'])->name('store');
             Route::get('/{portfolio}', [UserPortfolioController::class, 'show'])->name('show');
+            Route::get('/{portfolio}/transactions', [UserPortfolioTransactionController::class, 'index'])->name('transactions.index');
         });
 
+        Route::get('/transactions', [UserTransactionController::class, 'index'])->name('transactions.index');
         Route::post('/transactions', [UserTransactionController::class, 'store'])->name('transactions.store');
     });
 

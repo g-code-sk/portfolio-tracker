@@ -14,6 +14,11 @@ export interface UserTransactionResource {
     price: string
     date: string
     fee: string
+    formattedDate: string
+    formattedAmount: string
+    formattedPrice: string
+    formattedFee: string
+    formattedTotal: string
     createdAt: string
     updatedAt: string
 }

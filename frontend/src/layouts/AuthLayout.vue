@@ -12,7 +12,7 @@
                 <main class="relative z-10 ml-64 min-h-[calc(100vh-72px)] flex-1 bg-gray-100 pt-[80px]">
                     <div class="mt-3">
                         <div v-if="breadcrumbItems" class="mx-3 mb-3">
-                            <Breadcrumb :items="breadcrumbItems" />
+                            <Breadcrumb :items="breadcrumbItems" :loading="loading" />
                         </div>
                         <!-- <div class="mx-3 rounded-lg border border-gray-200 p-3"> -->
                         <div class="mx-3 p-3">
@@ -34,7 +34,10 @@ import { IonContent, IonPage } from '@ionic/vue'
 
 interface Props {
     breadcrumbItems?: BreadcrumbItem[]
+    loading?: boolean
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+    loading: false,
+})
 </script>
