@@ -1,10 +1,17 @@
 <template>
     <AuthLayout :breadcrumb-items="breadcrumbItems" :loading="isLoading">
-        <div class="p-8">
+        <div>
             <div v-if="isLoading" class="flex items-center justify-center py-12">
                 <div class="border-t-primary-600 h-8 w-8 animate-spin rounded-full border-4 border-gray-200"></div>
             </div>
-            <div v-else-if="portfolio" class="space-y-8">
+            <div v-else-if="portfolio" class="space-y-4">
+                <div class="flex justify-end">
+                    <Button color="danger" size="sm" class="inline-flex items-center gap-2">
+                        <TrashIcon size="sm" />
+                        Delete Portfolio
+                    </Button>
+                </div>
+
                 <div v-if="transactions.length > 0" class="rounded-xl border border-gray-200 bg-white shadow-sm">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <h2 class="text-lg font-semibold text-gray-900">Transactions</h2>
@@ -61,7 +68,9 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
+import Button from '@/components/ui/Button.vue'
 import EmptyState from '@/components/ui/EmptyList.vue'
+import TrashIcon from '@/components/ui/icons/TrashIcon.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { fetchUserPortfolioApi } from '@/lib/api/portfolio-api'
 import { fetchUserPortfolioTransactionsApi } from '@/lib/api/transaction-api'
@@ -73,7 +82,7 @@ const toast = useToast()
 
 const portfolio = ref<UserPortfolioResource | null>(null)
 const transactions = ref<UserTransactionResource[]>([])
-const breadcrumbItems = computed(() => [{ label: 'Portfolios', to: '/portfolios' }, { label: portfolio.value?.name }])
+const breadcrumbItems = computed(() => [{ label: 'Portfolios', to: '/portfolios' }, { label: portfolio.value?.name ?? null }])
 
 const isLoading = ref(false)
 

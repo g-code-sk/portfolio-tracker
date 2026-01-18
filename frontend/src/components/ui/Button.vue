@@ -15,9 +15,9 @@
         </svg>
 
         <!-- Button Content -->
-        <span v-if="!loading">
+        <div v-if="!loading" class="inline-flex items-center gap-2">
             <slot></slot>
-        </span>
+        </div>
     </button>
 </template>
 
