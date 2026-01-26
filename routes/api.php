@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/', [UserPortfolioController::class, 'index'])->name('index');
             Route::post('/', [UserPortfolioController::class, 'store'])->name('store');
             Route::get('/{portfolio}', [UserPortfolioController::class, 'show'])->name('show');
+            Route::delete('/{portfolio}', [UserPortfolioController::class, 'destroy'])->name('destroy');
             Route::get('/{portfolio}/transactions', [UserPortfolioTransactionController::class, 'index'])->name('transactions.index');
         });
 

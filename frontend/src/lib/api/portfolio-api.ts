@@ -16,3 +16,7 @@ export async function fetchUserPortfolioApi(id: number): Promise<UserPortfolioRe
     const response = await api.get<ApiResponse<UserPortfolioResource>>(`/user/portfolios/${id}`)
     return response.data.data
 }
+
+export async function deleteUserPortfolioApi(id: number): Promise<void> {
+    await api.delete(`/user/portfolios/${id}`)
+}

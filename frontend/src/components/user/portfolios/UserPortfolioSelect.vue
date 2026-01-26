@@ -19,7 +19,6 @@ const props = withDefaults(
     {
         name: 'portfolioId',
         label: 'Portfolio',
-        hint: 'Select a portfolio',
         disabled: false,
         isLoading: false,
     },
@@ -38,4 +37,3 @@ onMounted(async () => {
     await fetchUserPortfolios()
 })
 </script>
-

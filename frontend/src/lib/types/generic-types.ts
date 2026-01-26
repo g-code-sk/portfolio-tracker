@@ -8,7 +8,7 @@ export interface SidebarNavItem {
 }
 
 export interface SelectOption {
-    description: any
+    description?: any
     label: string
     value: string | number
 }

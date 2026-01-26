@@ -6,13 +6,18 @@
 
         <div class="relative">
             <select :id="computedId" :name="name" :disabled="disabled" :class="selectClasses" :value="currentValue" @change="handleChange" @blur="handleBlur">
+                <option value="" disabled hidden></option>
                 <option v-for="option in options" :key="option.value" :value="option.value">
                     {{ option.label }}
                 </option>
             </select>
 
+            <div v-if="!currentValue" class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                <span class="text-gray-500">{{ placeholder }}</span>
+            </div>
+
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
                 </svg>
             </div>
@@ -37,11 +42,13 @@ const props = withDefaults(
         options: SelectOption[]
         hint?: string
         disabled?: boolean
+        placeholder?: string
     }>(),
     {
         modelValue: '',
         options: () => [],
         disabled: false,
+        placeholder: 'Select an option',
     },
 )
 

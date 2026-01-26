@@ -2,33 +2,28 @@
     <button
         :disabled="disabled || loading"
         :class="buttonClasses"
-        class="inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+        class="relative flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
     >
-        <!-- Loading Spinner -->
-        <svg v-if="loading" :class="spinnerSizeClasses" class="animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-        </svg>
+        <!-- Loading Spinner (absolutely positioned) -->
+        <SpinnerIcon v-if="loading" :size="spinnerSize" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
 
-        <!-- Button Content -->
-        <div v-if="!loading" class="inline-flex items-center gap-2">
+        <!-- Button Content (invisible when loading but maintains space) -->
+        <div class="flex items-center gap-2" :class="{ 'opacity-0': loading }">
             <slot></slot>
         </div>
     </button>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue'
+
+import SpinnerIcon from '@/components/ui/icons/SpinnerIcon.vue'
 
 interface Props {
-    color?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-    size?: 'sm' | 'md' | 'lg' | 'xl';
-    disabled?: boolean;
-    loading?: boolean;
+    color?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info'
+    size?: 'sm' | 'md' | 'lg' | 'xl'
+    disabled?: boolean
+    loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,11 +31,11 @@ const props = withDefaults(defineProps<Props>(), {
     size: 'md',
     disabled: false,
     loading: false,
-});
+})
 
 const colorClasses = computed(() => {
     if (props.disabled || props.loading) {
-        return 'bg-gray-300 text-gray-500 cursor-not-allowed';
+        return 'bg-gray-300 text-gray-500 cursor-not-allowed'
     }
 
     const colors = {
@@ -50,10 +45,10 @@ const colorClasses = computed(() => {
         danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
         warning: 'bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-500',
         info: 'bg-cyan-600 hover:bg-cyan-700 text-white focus:ring-cyan-500',
-    };
+    }
 
-    return colors[props.color];
-});
+    return colors[props.color]
+})
 
 const sizeClasses = computed(() => {
     const sizes = {
@@ -61,23 +56,23 @@ const sizeClasses = computed(() => {
         md: 'px-4 py-2 text-base',
         lg: 'px-6 py-3 text-lg',
         xl: 'px-8 py-4 text-xl',
-    };
+    }
 
-    return sizes[props.size];
-});
+    return sizes[props.size]
+})
 
-const spinnerSizeClasses = computed(() => {
+const spinnerSize = computed(() => {
     const sizes = {
-        sm: 'h-4 w-4',
-        md: 'h-5 w-5',
-        lg: 'h-6 w-6',
-        xl: 'h-7 w-7',
-    };
+        sm: 4,
+        md: 5,
+        lg: 6,
+        xl: 7,
+    }
 
-    return sizes[props.size];
-});
+    return sizes[props.size]
+})
 
 const buttonClasses = computed(() => {
-    return `${colorClasses.value} ${sizeClasses.value}`;
-});
+    return `${colorClasses.value} ${sizeClasses.value}`
+})
 </script>

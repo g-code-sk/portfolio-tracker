@@ -6,10 +6,7 @@
             </div>
             <div v-else-if="portfolio" class="space-y-4">
                 <div class="flex justify-end">
-                    <Button color="danger" size="sm" class="inline-flex items-center gap-2">
-                        <TrashIcon size="sm" />
-                        Delete Portfolio
-                    </Button>
+                    <DeletePortfolioModal :portfolio-id="portfolio.id" />
                 </div>
 
                 <div v-if="transactions.length > 0" class="rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -68,9 +65,8 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
-import Button from '@/components/ui/Button.vue'
 import EmptyState from '@/components/ui/EmptyList.vue'
-import TrashIcon from '@/components/ui/icons/TrashIcon.vue'
+import DeletePortfolioModal from '@/components/user/portfolios/DeletePortfolioModal.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { fetchUserPortfolioApi } from '@/lib/api/portfolio-api'
 import { fetchUserPortfolioTransactionsApi } from '@/lib/api/transaction-api'

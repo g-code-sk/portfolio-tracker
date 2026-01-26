@@ -19,6 +19,7 @@ Frontend structure under `/frontend`:
 - Use **vue-toastification** for notifications
 - All errors must be handled gracefully by notifying the user
 - Use interfaces instead of types
+- If you are using icons as SVG, always create a component in **frontend/src/components/ui/icons** and use existing icons if possible
 
 ## Vue Rules
 

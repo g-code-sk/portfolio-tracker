@@ -10,6 +10,7 @@ use App\Models\Portfolio;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use \Illuminate\Http\JsonResponse as HttpJsonResponse;
 
 final class UserPortfolioController
 {
@@ -45,10 +46,22 @@ final class UserPortfolioController
             ->additional(['message' => 'Portfolio created successfully']);
     }
 
-    public function show(Request $request, Portfolio $portfolio): JsonResource
+    public function show(Portfolio $portfolio): JsonResource
     {
         $this->authorize('view', $portfolio);
 
         return new UserPortfolioResource($portfolio);
+    }
+
+    public function destroy(Portfolio $portfolio): HttpJsonResponse
+    {
+        $this->authorize('delete', $portfolio);
+
+        $portfolio->transactions()->delete();
+        $portfolio->delete();
+
+        return response()->json([
+            'message' => 'Portfolio and all associated transactions deleted successfully',
+        ]);
     }
 }
