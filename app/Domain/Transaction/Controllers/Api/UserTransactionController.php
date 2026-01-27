@@ -8,9 +8,11 @@ use App\Domain\Portfolio\Actions\ImportPortfolioAction;
 use App\Domain\Portfolio\Data\ImportTransactionsData;
 use App\Domain\Transaction\Actions\CreateUserTransactionAction;
 use App\Domain\Transaction\Data\CreateUserTransactionData;
+use App\Domain\Transaction\Data\TransactionImportRowData;
 use App\Domain\Transaction\Import\TransactionImport;
 use App\Domain\Transaction\Resources\UserTransactionResource;
 use App\Models\Portfolio;
+use App\Models\Security;
 use App\Models\Transaction;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
@@ -55,14 +57,22 @@ final class UserTransactionController
         $portfolio = Portfolio::findOrFail($data->portfolioId);
         $this->authorize('userImportTransactions', $portfolio);
 
-        // $result = app(ImportPortfolioAction::class)->handle($data);
+        $import = new TransactionImport();
+        Excel::import($import, $data->file);
+        $transactions = $import->getCollection();
 
-        $collection = Excel::toCollection(new TransactionImport, $data->file);
-
-        dd($collection->first()->first());
+        // Create or update securities
+        $transactions->each(function (TransactionImportRowData $transaction) {
+            $result =
+                $security = Security::firstOrCreate([
+                    'symbol' => $transaction->ticker,
+                ], [
+                    'name' => $transaction->name,
+                ]);
+        });
 
         return response()->json([
-            'data' => $result,
+            'data' => $transactions,
             'message' => 'File parsed successfully',
         ]);
     }

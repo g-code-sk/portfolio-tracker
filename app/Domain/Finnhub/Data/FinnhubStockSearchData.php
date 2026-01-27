@@ -15,4 +15,15 @@ final class FinnhubStockSearchData extends Data
         public int $count,
         public array $items,
     ) {}
+
+    public function findBySymbol(string $symbol): ?FinnhubStockSearchItemData
+    {
+        foreach ($this->items as $item) {
+            if (strtoupper($item->symbol) === strtoupper($symbol)) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
 }

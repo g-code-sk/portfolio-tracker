@@ -6,7 +6,7 @@ namespace App\Domain\Finnhub\Data;
 
 use Spatie\LaravelData\Data;
 
-final class FinnhubQuoteData extends Data
+final class FinnhubCurrentPriceData extends Data
 {
     public function __construct(
         public float $currentPrice,

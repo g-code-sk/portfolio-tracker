@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Domain\Finnhub\Actions\FinnhubGetQuoteAction;
+use App\Domain\Finnhub\Actions\FinnhubGetCompanyProfileAction;
+use App\Domain\Finnhub\Actions\FinnhubGetCurrentPriceInfoAction;
 use App\Domain\Finnhub\Actions\FinnhubSearchStockAction;
 use App\Domain\Portfolio\Policies\PortfolioPolicy;
 use App\Models\Portfolio;
+use App\Services\HttpClientService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,24 +27,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(FinnhubSearchStockAction::class, function ($app) {
-            $apiToken = config('services.finnhub.token');
-
-            if (empty($apiToken)) {
-                throw new \RuntimeException('FINNHUB_API_TOKEN is not set in .env file');
-            }
-
-            return new FinnhubSearchStockAction($apiToken);
+        $this->app->singleton(HttpClientService::class, function ($app) {
+            return new HttpClientService();
         });
 
-        $this->app->singleton(FinnhubGetQuoteAction::class, function ($app) {
-            $apiToken = config('services.finnhub.token');
+        $this->app->singleton(FinnhubSearchStockAction::class, function ($app) {
+            return new FinnhubSearchStockAction();
+        });
 
-            if (empty($apiToken)) {
-                throw new \RuntimeException('FINNHUB_API_TOKEN is not set in .env file');
-            }
+        $this->app->singleton(FinnhubGetCurrentPriceInfoAction::class, function ($app) {
+            return new FinnhubGetCurrentPriceInfoAction();
+        });
 
-            return new FinnhubGetQuoteAction($apiToken);
+        $this->app->singleton(FinnhubGetCompanyProfileAction::class, function ($app) {
+            return new FinnhubGetCompanyProfileAction();
         });
     }
 

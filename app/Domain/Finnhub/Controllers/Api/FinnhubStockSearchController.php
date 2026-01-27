@@ -17,7 +17,7 @@ final class FinnhubStockSearchController
 
     public function search(SearchStockData $data): JsonResource
     {
-        $result = $this->searchStockAction->execute($data->q);
+        $result = $this->searchStockAction->executeQuery($data->q);
 
         return new FinnhubStockSearchResource($result);
     }

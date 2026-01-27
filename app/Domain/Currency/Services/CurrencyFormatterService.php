@@ -18,4 +18,27 @@ final class CurrencyFormatterService
         return (new \NumberFormatter('sk_SK', \NumberFormatter::CURRENCY))
             ->formatCurrency($value, $currency);
     }
+
+    /**
+     * Get the full name of a currency by its code.
+     *
+     * @param string $code The currency code (e.g., 'USD', 'EUR')
+     * @return string The currency name
+     */
+    public function getNameByCode(string $code): string
+    {
+        return match ($code) {
+            'USD' => 'US Dollar',
+            'EUR' => 'Euro',
+            'GBP' => 'British Pound',
+            'JPY' => 'Japanese Yen',
+            'CAD' => 'Canadian Dollar',
+            'AUD' => 'Australian Dollar',
+            'CHF' => 'Swiss Franc',
+            'CNY' => 'Chinese Yuan',
+            'HKD' => 'Hong Kong Dollar',
+            'SGD' => 'Singapore Dollar',
+            default => $code,
+        };
+    }
 }

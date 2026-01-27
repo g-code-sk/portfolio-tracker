@@ -4,53 +4,54 @@ declare(strict_types=1);
 
 namespace App\Domain\Transaction\Actions;
 
-use App\Domain\Finnhub\Actions\FinnhubGetQuoteAction;
+use App\Domain\Country\Actions\FindOrCreateCountryAction;
+use App\Domain\Currency\Actions\FindOrCreateCurrencyAction;
+use App\Domain\Exchange\Actions\FindOrCreateExchangeAction;
+use App\Domain\Finnhub\Actions\FinnhubGetCompanyProfileAction;
+use App\Domain\Finnhub\Actions\FinnhubGetCurrentPriceInfoAction;
 use App\Domain\Finnhub\Actions\FinnhubSearchStockAction;
+use App\Domain\Security\Actions\FindOrCreateSecurityAction;
+use App\Domain\Security\Actions\FindOrCreateSecurityTypeAction;
 use App\Domain\Transaction\Data\CreateUserTransactionData;
-use App\Models\Security;
 use App\Models\Transaction;
-use Illuminate\Support\Collection;
 
 final class CreateUserTransactionAction
 {
-    public function __construct(
-        private readonly FinnhubGetQuoteAction $getQuoteAction,
-        private readonly FinnhubSearchStockAction $searchStockAction,
-    ) {}
+    public function __construct() {}
 
-    public function execute(CreateUserTransactionData $data, int $userId): Transaction
+    public function execute(CreateUserTransactionData $requestData, int $userId): Transaction
     {
-        // Fetch security basic data from Finnhub
-        $searchResults = $this->searchStockAction->execute($data->stockSymbol);
-        $quote = $this->getQuoteAction->execute($data->stockSymbol);
+        $searchResultsData = app(FinnhubSearchStockAction::class)->executeQuery($requestData->stockSymbol);
+        $currentPriceData = app(FinnhubGetCurrentPriceInfoAction::class)->executeQuery($requestData->stockSymbol);
+        $companyProfileData = app(FinnhubGetCompanyProfileAction::class)->executeQuery($requestData->stockSymbol);
 
-        // Find matching stock in search results
-        $stockInfo = collect($searchResults->items)->first(
-            fn($item) => strtoupper($item->symbol) === strtoupper($data->stockSymbol)
-        );
+        // if one of the queries fail, exception is thrown and the transaction is not created
 
-        // Prepare security data with fetched information
-        $securityData = [
-            'symbol' => $data->stockSymbol,
-            'description' => $stockInfo?->description ?? $data->stockSymbol,
-            'display_symbol' => $stockInfo?->displaySymbol ?? $data->stockSymbol,
-            'type' => $stockInfo?->type ?? 'Common Stock',
-        ];
+        $stockSearchData = $searchResultsData->findBySymbol($requestData->stockSymbol);
 
-        // Find or create security by symbol
-        $security = Security::firstOrCreate(
-            ['symbol' => $data->stockSymbol],
-            $securityData
+        $currency = app(FindOrCreateCurrencyAction::class)->execute($companyProfileData->currency);
+        $country = app(FindOrCreateCountryAction::class)->execute($companyProfileData->country);
+        $exchange = app(FindOrCreateExchangeAction::class)->execute($companyProfileData->exchange);
+        $securityType = app(FindOrCreateSecurityTypeAction::class)->execute($stockSearchData?->type);
+
+        $security = app(FindOrCreateSecurityAction::class)->execute(
+            stockSearchData: $stockSearchData,
+            companyProfile: $companyProfileData,
+            currentPriceData: $currentPriceData,
+            currency: $currency,
+            country: $country,
+            exchange: $exchange,
+            securityType: $securityType,
         );
 
         $transaction = Transaction::create([
             'user_id' => $userId,
-            'portfolio_id' => $data->portfolioId,
+            'portfolio_id' => $requestData->portfolioId,
             'security_id' => $security->id,
-            'amount' => $data->amount,
-            'price' => $data->price,
-            'date' => $data->date,
-            'fee' => $data->fee,
+            'amount' => $requestData->amount,
+            'price' => $requestData->price,
+            'date' => $requestData->date,
+            'fee' => $requestData->fee,
         ]);
 
         return $transaction;

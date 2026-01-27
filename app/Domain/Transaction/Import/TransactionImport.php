@@ -14,21 +14,35 @@ use Maatwebsite\Excel\Events\BeforeImport;
 
 class TransactionImport implements ToCollection, WithHeadingRow, WithEvents
 {
+    private ?Collection $processedCollection = null;
+
     /**
+     * @param Collection<int, Collection> $rows Collection of all rows from the sheet
      * @return Collection<int, TransactionImportRowData>
      */
     public function collection(Collection $rows): Collection
     {
-        return $rows->map(function (array $row) {
-            return TransactionImportRowData::fromCsvRow($row);
+        $this->processedCollection = $rows->map(function (Collection $row) {
+            return TransactionImportRowData::fromCsvRow($row->toArray());
         });
+
+        return $this->processedCollection;
+    }
+
+    /**
+     * Get the processed collection
+     * @return null|Collection<int, TransactionImportRowData>
+     */
+    public function getCollection(): ?Collection
+    {
+        return $this->processedCollection;
     }
 
     public function registerEvents(): array
     {
         return [
             BeforeImport::class => function (BeforeImport $event) {
-                $this->validateSheetCount($event->reader->getSheetCount());
+                $this->validateSheetCount($event);
 
                 $sheet = $event->reader->getAllSheets()[0];
                 $rows = $sheet->toArray();
@@ -40,8 +54,10 @@ class TransactionImport implements ToCollection, WithHeadingRow, WithEvents
         ];
     }
 
-    private function validateSheetCount(int $sheetCount): void
+    private function validateSheetCount(BeforeImport $event): void
     {
+        $sheetCount = $event->reader->getSheetCount();
+
         if ($sheetCount !== 1) {
             throw new InvalidArgumentException("File must contain exactly one sheet. Found {$sheetCount} sheets.");
         }
