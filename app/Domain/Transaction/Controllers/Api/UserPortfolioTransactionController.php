@@ -19,11 +19,9 @@ final class UserPortfolioTransactionController
 
     public function index(Request $request, Portfolio $portfolio): JsonResource
     {
-        $this->authorize('view', $portfolio);
+        $this->authorize('userIndex', $portfolio);
 
-        $transactions = Transaction::query()
-            ->where('user_id', $request->user()->id)
-            ->where('portfolio_id', $portfolio->id)
+        $transactions = $portfolio->transactions()
             ->with(['security', 'portfolio.currency'])
             ->orderByDesc('date')
             ->orderByDesc('created_at')

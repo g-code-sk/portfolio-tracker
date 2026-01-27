@@ -37,8 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{portfolio}/transactions', [UserPortfolioTransactionController::class, 'index'])->name('transactions.index');
         });
 
-        Route::get('/transactions', [UserTransactionController::class, 'index'])->name('transactions.index');
-        Route::post('/transactions', [UserTransactionController::class, 'store'])->name('transactions.store');
+        // Route::get('/transactions', [UserTransactionController::class, 'index'])->name('transactions.index');
+        // Route::post('/transactions', [UserTransactionController::class, 'store'])->name('transactions.store');
+        Route::post('/transactions/import', [UserTransactionController::class, 'import'])->name('transactions.import');
     });
 
     // Device/session management

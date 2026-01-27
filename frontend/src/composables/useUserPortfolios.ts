@@ -33,6 +33,10 @@ async function refreshUserPortfolios(): Promise<void> {
     await fetchUserPortfolios(true)
 }
 
+function hasNoPortfolios(): boolean {
+    return portfolios.value.length === 0
+}
+
 export function useUserPortfolios() {
     return {
         portfolios,
@@ -40,5 +44,6 @@ export function useUserPortfolios() {
         isLoaded,
         fetchUserPortfolios,
         refreshUserPortfolios,
+        hasNoPortfolios,
     }
 }

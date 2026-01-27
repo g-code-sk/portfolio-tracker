@@ -78,6 +78,7 @@ All code must be:
 - Ionic components (unless explicitly asked)
 - Fat controllers
 - Mixing validation logic into controllers
+- Comments, unless the logic is not obvious or it is a workaround
 
 ---
 

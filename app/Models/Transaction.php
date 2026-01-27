@@ -18,6 +18,7 @@ class Transaction extends Model
         'user_id',
         'portfolio_id',
         'security_id',
+        'transaction_type_id',
         'amount',
         'price',
         'date',
@@ -52,5 +53,10 @@ class Transaction extends Model
     public function security(): BelongsTo
     {
         return $this->belongsTo(Security::class);
+    }
+
+    public function transactionType(): BelongsTo
+    {
+        return $this->belongsTo(TransactionType::class);
     }
 }

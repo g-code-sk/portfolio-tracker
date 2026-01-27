@@ -31,3 +31,17 @@ export interface CreateUserTransactionPayloadData {
     date: string
     fee: number
 }
+
+export interface ImportUserTransactionsPayloadData {
+    portfolioId: number
+    type: string
+    file: File
+}
+
+export interface ImportUserTransactionsResponse {
+    headers: string[]
+    data: Record<string, unknown>[]
+    type: string
+    portfolioId: number
+    rowCount: number
+}

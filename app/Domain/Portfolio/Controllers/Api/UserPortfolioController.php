@@ -20,6 +20,8 @@ final class UserPortfolioController
 
     public function index(Request $request): JsonResource
     {
+        $this->authorize('userIndex', Portfolio::class);
+
         /** @var Collection<int, Portfolio> */
         $portfolios = $request->user()
             ->portfolios()
@@ -32,6 +34,8 @@ final class UserPortfolioController
 
     public function store(CreateUserPortfolioData $data, Request $request): JsonResource
     {
+        $this->authorize('userStore', Portfolio::class);
+
         $portfolio = new Portfolio([
             'user_id' => $request->user()->id,
             'name' => $data->name,
@@ -48,14 +52,14 @@ final class UserPortfolioController
 
     public function show(Portfolio $portfolio): JsonResource
     {
-        $this->authorize('view', $portfolio);
+        $this->authorize('userShow', $portfolio);
 
         return new UserPortfolioResource($portfolio);
     }
 
     public function destroy(Portfolio $portfolio): HttpJsonResponse
     {
-        $this->authorize('delete', $portfolio);
+        $this->authorize('userDelete', $portfolio);
 
         $portfolio->transactions()->delete();
         $portfolio->delete();

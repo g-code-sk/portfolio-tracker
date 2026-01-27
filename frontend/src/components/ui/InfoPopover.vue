@@ -45,7 +45,7 @@ const iconForType = computed(() => {
 })
 
 const buttonClasses = computed(() => {
-    const baseClasses = 'flex h-6 w-6 items-center justify-center bg-transparent transition-colors'
+    const baseClasses = 'flex h-4 w-4 items-center justify-center bg-transparent transition-colors'
     const colorClasses = {
         info: 'text-blue-400 hover:text-blue-600',
         error: 'text-red-400 hover:text-red-600',

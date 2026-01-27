@@ -3,16 +3,7 @@
         <label v-if="label" :for="computedId" class="mb-2 block text-sm font-medium text-gray-700">
             {{ label }}
         </label>
-        <input
-            :id="computedId"
-            ref="fileInputRef"
-            type="file"
-            :accept="accept"
-            :disabled="disabled"
-            :class="inputClasses"
-            @change="handleChange"
-            @blur="handleBlur"
-        />
+        <input :id="computedId" ref="fileInputRef" type="file" :accept="accept" :disabled="disabled" :class="inputClasses" @change="handleChange" @blur="handleBlur" />
         <p v-if="showError" class="mt-1 text-xs text-red-600">{{ activeError }}</p>
         <p v-else-if="hint" class="mt-1 text-xs text-gray-500">{{ hint }}</p>
     </div>

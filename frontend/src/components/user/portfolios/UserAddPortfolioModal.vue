@@ -1,7 +1,10 @@
 <template>
     <div>
         <div class="flex gap-3">
-            <Button color="primary" size="sm" @click="isModalOpen = true"> Add Portfolio </Button>
+            <Button color="primary" size="sm" @click="isModalOpen = true">
+                <PlusIcon :size="4" />
+                Add Portfolio
+            </Button>
         </div>
 
         <Modal v-model="isModalOpen" title="Create Portfolio" :show-cancel-button="true" :disabled="isSubmitting">
@@ -24,6 +27,7 @@ import Button from '@/components/ui/Button.vue'
 import CurrencySelect from '@/components/ui/inputs/CurrencySelect.vue'
 import Input from '@/components/ui/inputs/Input.vue'
 import Modal from '@/components/ui/Modal.vue'
+import PlusIcon from '@/components/ui/icons/PlusIcon.vue'
 import { stringRequiredRule } from '@/lib/validation/rules'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'

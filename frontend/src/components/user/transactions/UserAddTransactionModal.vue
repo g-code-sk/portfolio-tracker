@@ -1,8 +1,11 @@
 <template>
     <div>
         <div class="relative flex items-center gap-3">
-            <Button color="primary" size="sm" :disabled="hasNoPortfolios" @click="handleOpenModal"> Add Transaction </Button>
-            <InfoPopover v-if="hasNoPortfolios" type="info" title="No portfolios available" text="Create at least one portfolio before adding transactions." />
+            <Button color="primary" size="sm" :disabled="hasNoPortfolios()" @click="handleOpenModal">
+                <PlusIcon />
+                Add Transaction
+                <InfoPopover v-if="hasNoPortfolios()" type="info" title="No portfolios available" text="Create at least one portfolio before adding transactions." />
+            </Button>
         </div>
 
         <Modal v-model="isModalOpen" title="Add Transaction" :show-cancel-button="true" :disabled="isSubmitting">
@@ -26,6 +29,7 @@
 
 <script setup lang="ts">
 import Button from '@/components/ui/Button.vue'
+import PlusIcon from '@/components/ui/icons/PlusIcon.vue'
 import InfoPopover from '@/components/ui/InfoPopover.vue'
 import Input from '@/components/ui/inputs/Input.vue'
 import StockSelect from '@/components/ui/inputs/StockSelect.vue'
@@ -36,18 +40,12 @@ import { createUserTransactionApi } from '@/lib/api/transaction-api'
 import { minDecimalNumberRule, nonNegativeNumberRule, numberRequiredRule, stringRequiredRule } from '@/lib/validation/rules'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import { computed, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { z } from 'zod'
 
 const toast = useToast()
-const { portfolios, fetchUserPortfolios } = useUserPortfolios()
-
-const hasNoPortfolios = computed(() => portfolios.value.length === 0)
-
-onMounted(async () => {
-    await fetchUserPortfolios()
-})
+const { hasNoPortfolios, fetchUserPortfolios } = useUserPortfolios()
 
 const createTransactionFormId = 'create-transaction-form'
 const isModalOpen = ref(false)
@@ -76,7 +74,7 @@ const { handleSubmit, isSubmitting, meta, resetForm, values } = useForm({
 })
 
 const handleOpenModal = () => {
-    if (!hasNoPortfolios.value) {
+    if (!hasNoPortfolios()) {
         isModalOpen.value = true
     }
 }
