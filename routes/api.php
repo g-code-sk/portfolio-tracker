@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         // Route::get('/transactions', [UserTransactionController::class, 'index'])->name('transactions.index');
-        // Route::post('/transactions', [UserTransactionController::class, 'store'])->name('transactions.store');
+        Route::post('/transactions', [UserTransactionController::class, 'store'])->name('transactions.store');
         Route::post('/transactions/import', [UserTransactionController::class, 'import'])->name('transactions.import');
     });
 

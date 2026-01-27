@@ -32,7 +32,10 @@ import Alert from '@/components/ui/Alert.vue'
 import Button from '@/components/ui/Button.vue'
 import TrashIcon from '@/components/ui/icons/TrashIcon.vue'
 import Modal from '@/components/ui/Modal.vue'
+import { useUserPortfolios } from '@/composables/useUserPortfolios'
 import { deleteUserPortfolioApi } from '@/lib/api/portfolio-api'
+
+const { fetchUserPortfolios } = useUserPortfolios()
 
 const props = defineProps<{
     portfolioId: number
@@ -49,6 +52,7 @@ const handleDelete = async () => {
         isDeleting.value = true
 
         await deleteUserPortfolioApi(props.portfolioId)
+        await fetchUserPortfolios(true)
 
         toast.success('Portfolio deleted successfully')
         showModal.value = false

@@ -96,7 +96,7 @@ const submitCreateTransaction = handleSubmit(async (values) => {
         resetForm()
         toast.success('Transaction added successfully')
     } catch (error: any) {
-        const errorMessage = error.response?.data?.message || 'Failed to add transaction. Please try again.'
+        const errorMessage = 'Failed to add transaction. Please try again later.'
         toast.error(errorMessage)
         console.error(error)
     }
