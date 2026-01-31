@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Portfolio\Controllers\Api;
+namespace App\Domain\Portfolio\Controllers;
 
 use App\Domain\Portfolio\Data\CreateUserPortfolioData;
 use App\Domain\Portfolio\Resources\UserPortfolioResource;

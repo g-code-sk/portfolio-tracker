@@ -25,8 +25,9 @@ export async function createUserTransactionApi(data: CreateUserTransactionPayloa
 export async function importUserTransactionsApi(data: ImportUserTransactionsPayloadData): Promise<ImportUserTransactionsResponse> {
     const formData = new FormData()
 
+    // formData is used to send the file to the server
     formData.append('portfolioId', data.portfolioId.toString())
-    formData.append('type', data.type)
+    formData.append('brokerTypeId', data.brokerTypeId.toString())
     formData.append('file', data.file)
 
     const response = await api.post<ApiResponse<ImportUserTransactionsResponse>>('/user/transactions/import', formData, {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Currency\Controllers\Api;
+namespace App\Domain\Currency\Controllers;
 
 use App\Domain\Currency\Resources\CurrencySelectResource;
 use App\Models\Currency;

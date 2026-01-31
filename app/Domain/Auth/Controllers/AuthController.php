@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Auth\Controllers\Api;
+namespace App\Domain\Auth\Controllers;
 
 use App\Domain\Auth\Data\RegisterData;
 use App\Domain\Auth\Data\LoginData;

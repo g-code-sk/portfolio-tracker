@@ -32,16 +32,20 @@ export interface CreateUserTransactionPayloadData {
     fee: number
 }
 
+export interface TransactionTypeInputResource {
+    id: number
+    name: string
+}
+
 export interface ImportUserTransactionsPayloadData {
     portfolioId: number
-    type: string
+    brokerTypeId: number
     file: File
 }
 
 export interface ImportUserTransactionsResponse {
     headers: string[]
     data: Record<string, unknown>[]
-    type: string
     portfolioId: number
     rowCount: number
 }

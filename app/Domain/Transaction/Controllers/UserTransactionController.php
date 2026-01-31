@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Transaction\Controllers\Api;
+namespace App\Domain\Transaction\Controllers;
 
-use App\Domain\Portfolio\Actions\ImportPortfolioAction;
 use App\Domain\Portfolio\Data\ImportTransactionsData;
 use App\Domain\Transaction\Actions\CreateUserTransactionAction;
 use App\Domain\Transaction\Data\CreateUserTransactionData;

@@ -6,7 +6,7 @@
                     <h1 class="mb-2 text-3xl font-bold text-gray-900">Portfolios</h1>
                 </div>
                 <div class="flex gap-3">
-                    <UserImportPortfolioModal />
+                    <UserImportTransactionsModal />
                     <UserAddTransactionModal />
                     <UserAddPortfolioModal />
                 </div>
@@ -23,9 +23,9 @@
 <script setup lang="ts">
 import EmptyList from '@/components/ui/EmptyList.vue'
 import UserAddPortfolioModal from '@/components/user/portfolios/UserAddPortfolioModal.vue'
-import UserImportPortfolioModal from '@/components/user/portfolios/UserImportPortfolioModal.vue'
 import UserPortfolioList from '@/components/user/portfolios/UserPortfolioList.vue'
 import UserAddTransactionModal from '@/components/user/transactions/UserAddTransactionModal.vue'
+import UserImportTransactionsModal from '@/components/user/transactions/UserImportTransactionsModal.vue'
 import { useUserPortfolios } from '@/composables/useUserPortfolios'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import { onMounted } from 'vue'

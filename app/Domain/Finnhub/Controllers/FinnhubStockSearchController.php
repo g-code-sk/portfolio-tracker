@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Finnhub\Controllers\Api;
+namespace App\Domain\Finnhub\Controllers;
 
 use App\Domain\Finnhub\Actions\FinnhubSearchStockAction;
 use App\Domain\Stock\Data\SearchStockData;

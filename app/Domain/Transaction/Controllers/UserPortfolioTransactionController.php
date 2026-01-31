@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Transaction\Controllers\Api;
+namespace App\Domain\Transaction\Controllers;
 
 use App\Domain\Transaction\Resources\UserTransactionResource;
 use App\Models\Portfolio;
-use App\Models\Transaction;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

@@ -1,12 +1,14 @@
 <?php
 
-use App\Domain\Auth\Controllers\Api\AuthController;
-use App\Domain\Currency\Controllers\Api\CurrencyController;
-use App\Domain\Finnhub\Controllers\Api\FinnhubStockSearchController;
-use App\Domain\Portfolio\Controllers\Api\UserPortfolioController;
-use App\Domain\Transaction\Controllers\Api\UserPortfolioTransactionController;
-use App\Domain\Transaction\Controllers\Api\UserTransactionController;
-use App\Http\Controllers\Api\TestController;
+use App\Domain\Auth\Controllers\AuthController;
+use App\Domain\Currency\Controllers\CurrencyController;
+use App\Domain\Finnhub\Controllers\FinnhubStockSearchController;
+use App\Domain\Portfolio\Controllers\UserPortfolioController;
+use App\Domain\BrokerType\Controllers\BrokerTypeInputController;
+use App\Domain\TransactionType\Controllers\TransactionTypeInputController;
+use App\Domain\Transaction\Controllers\UserPortfolioTransactionController;
+use App\Domain\Transaction\Controllers\UserTransactionController;
+use App\Http\Controllers\TestController;
 use App\Models\Portfolio;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/transactions', [UserTransactionController::class, 'store'])->name('transactions.store');
         Route::post('/transactions/import', [UserTransactionController::class, 'import'])->name('transactions.import');
     });
+
+    Route::get('/broker-types/input', [BrokerTypeInputController::class, 'index'])->name('broker-types.input.index');
+    Route::get('/transaction-types/input', [TransactionTypeInputController::class, 'index'])->name('transaction-types.input.index');
 
     // Device/session management
     Route::get('/devices', [AuthController::class, 'devices']);

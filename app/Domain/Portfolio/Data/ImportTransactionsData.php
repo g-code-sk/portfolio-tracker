@@ -7,7 +7,6 @@ namespace App\Domain\Portfolio\Data;
 use Illuminate\Http\UploadedFile;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\File;
-use Spatie\LaravelData\Attributes\Validation\In;
 use Spatie\LaravelData\Attributes\Validation\Mimes;
 use Spatie\LaravelData\Data;
 
@@ -16,8 +15,10 @@ final class ImportTransactionsData extends Data
     public function __construct(
         #[Exists('portfolios', 'id')]
         public int $portfolioId,
-        #[In(['trading_212', 'interactive_brokers'])]
-        public string $type,
+        #[Exists('transaction_types', 'id')]
+        public int $transactionTypeId,
+        #[Exists('broker_types', 'id')]
+        public int $brokerTypeId,
         #[File, Mimes(['csv', 'xlsx', 'xls'])]
         public UploadedFile $file,
     ) {}
