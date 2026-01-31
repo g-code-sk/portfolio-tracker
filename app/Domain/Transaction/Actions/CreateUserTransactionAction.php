@@ -26,6 +26,7 @@ final class CreateUserTransactionAction
             'user_id' => $userId,
             'portfolio_id' => $requestData->portfolioId,
             'security_id' => $security->id,
+            'transaction_type_id' => $requestData->transactionTypeId,
             'amount' => $requestData->amount,
             'price' => $requestData->price,
             'date' => $requestData->date,

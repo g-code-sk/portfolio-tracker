@@ -25,6 +25,7 @@ export interface UserTransactionResource {
 
 export interface CreateUserTransactionPayloadData {
     portfolioId: number
+    transactionTypeId: number
     stockSymbol: string
     amount: number
     price: number

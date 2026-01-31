@@ -10,8 +10,9 @@
 
         <Modal v-model="isModalOpen" title="Add Transaction" :show-cancel-button="true" :disabled="isSubmitting">
             <form :id="createTransactionFormId" class="space-y-4" @submit.prevent="submitCreateTransaction">
-                <UserPortfolioSelect name="portfolioId" />
-                <StockSelect name="stockSymbol" />
+                <UserPortfolioSelect />
+                <TransactionTypeSelect />
+                <StockSelect />
                 <Input name="amount" label="Amount" type="number" placeholder="e.g., 10" autocomplete="off" />
                 <Input name="price" label="Price" type="number" placeholder="e.g., 150.50" autocomplete="off" />
                 <Input name="date" label="Date" type="date" autocomplete="off" />
@@ -35,6 +36,7 @@ import Input from '@/components/ui/inputs/Input.vue'
 import StockSelect from '@/components/ui/inputs/StockSelect.vue'
 import Modal from '@/components/ui/Modal.vue'
 import UserPortfolioSelect from '@/components/user/portfolios/UserPortfolioSelect.vue'
+import TransactionTypeSelect from '@/components/user/transactions/TransactionTypeSelect.vue'
 import { useUserPortfolios } from '@/composables/useUserPortfolios'
 import { createUserTransactionApi } from '@/lib/api/transaction-api'
 import { minDecimalNumberRule, nonNegativeNumberRule, numberRequiredRule, stringRequiredRule } from '@/lib/validation/rules'
@@ -53,6 +55,7 @@ const isModalOpen = ref(false)
 const createTransactionSchema = toTypedSchema(
     z.object({
         portfolioId: numberRequiredRule(),
+        transactionTypeId: z.preprocess((val) => (val === '' || val === undefined ? undefined : Number(val)), z.number().min(1, 'Transaction type is required')),
         stockSymbol: stringRequiredRule(),
         amount: minDecimalNumberRule(0.00000001),
         price: minDecimalNumberRule(0.00000001),
@@ -65,10 +68,11 @@ const { handleSubmit, isSubmitting, meta, resetForm, values } = useForm({
     validationSchema: createTransactionSchema,
     initialValues: {
         portfolioId: undefined,
+        transactionTypeId: undefined,
         stockSymbol: '',
         amount: undefined,
         price: undefined,
-        date: '',
+        date: new Date().toISOString().split('T')[0],
         fee: 0,
     },
 })
@@ -83,6 +87,7 @@ const submitCreateTransaction = handleSubmit(async (values) => {
     try {
         await createUserTransactionApi({
             portfolioId: values.portfolioId,
+            transactionTypeId: values.transactionTypeId,
             stockSymbol: values.stockSymbol,
             amount: values.amount,
             price: values.price,
