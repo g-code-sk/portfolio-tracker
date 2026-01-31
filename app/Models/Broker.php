@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BrokerType extends Model
+class Broker extends Model
 {
+    protected $table = 'brokers';
+
     protected $fillable = [
         'name',
     ];

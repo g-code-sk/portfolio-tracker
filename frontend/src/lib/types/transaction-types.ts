@@ -39,7 +39,7 @@ export interface TransactionTypeInputResource {
 
 export interface ImportUserTransactionsPayloadData {
     portfolioId: number
-    brokerTypeId: number
+    brokerId: number
     file: File
 }
 

@@ -27,7 +27,7 @@ export async function importUserTransactionsApi(data: ImportUserTransactionsPayl
 
     // formData is used to send the file to the server
     formData.append('portfolioId', data.portfolioId.toString())
-    formData.append('brokerTypeId', data.brokerTypeId.toString())
+    formData.append('brokerId', data.brokerId.toString())
     formData.append('file', data.file)
 
     const response = await api.post<ApiResponse<ImportUserTransactionsResponse>>('/user/transactions/import', formData, {

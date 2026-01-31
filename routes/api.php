@@ -4,7 +4,7 @@ use App\Domain\Auth\Controllers\AuthController;
 use App\Domain\Currency\Controllers\CurrencyController;
 use App\Domain\Finnhub\Controllers\FinnhubStockSearchController;
 use App\Domain\Portfolio\Controllers\UserPortfolioController;
-use App\Domain\BrokerType\Controllers\BrokerTypeInputController;
+use App\Domain\Broker\Controllers\BrokerInputController;
 use App\Domain\TransactionType\Controllers\TransactionTypeInputController;
 use App\Domain\Transaction\Controllers\UserPortfolioTransactionController;
 use App\Domain\Transaction\Controllers\UserTransactionController;
@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/transactions/import', [UserTransactionController::class, 'import'])->name('transactions.import');
     });
 
-    Route::get('/broker-types/input', [BrokerTypeInputController::class, 'index'])->name('broker-types.input.index');
+    Route::get('/brokers/input', [BrokerInputController::class, 'index'])->name('brokers.input.index');
     Route::get('/transaction-types/input', [TransactionTypeInputController::class, 'index'])->name('transaction-types.input.index');
 
     // Device/session management

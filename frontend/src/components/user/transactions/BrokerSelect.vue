@@ -1,10 +1,10 @@
 <template>
-    <Select v-bind="$attrs" :name="name" :label="label" :options="types" :disabled="isLoading || disabled" :placeholder="placeholder" :hint="hint" />
+    <Select v-bind="$attrs" :name="name" :label="label" :options="brokers" :disabled="isLoading || disabled" :placeholder="placeholder" :hint="hint" />
 </template>
 
 <script setup lang="ts">
 import Select from '@/components/ui/inputs/Select.vue'
-import { fetchBrokerTypesInputApi } from '@/lib/api/broker-type-api'
+import { fetchBrokersInputApi } from '@/lib/api/broker-api'
 import type { SelectOption } from '@/lib/types/generic-types'
 import { onMounted, ref } from 'vue'
 import { useToast } from 'vue-toastification'
@@ -18,23 +18,23 @@ const props = withDefaults(
         disabled?: boolean
     }>(),
     {
-        name: 'brokerTypeId',
-        label: 'Broker Type',
+        name: 'brokerId',
+        label: 'Broker',
         placeholder: 'Select your broker',
         disabled: false,
     },
 )
 
 const toast = useToast()
-const types = ref<SelectOption[]>([])
+const brokers = ref<SelectOption[]>([])
 const isLoading = ref(false)
 
 onMounted(async () => {
     isLoading.value = true
     try {
-        types.value = await fetchBrokerTypesInputApi()
+        brokers.value = await fetchBrokersInputApi()
     } catch {
-        toast.error('Failed to load broker types.')
+        toast.error('Failed to load brokers.')
     } finally {
         isLoading.value = false
     }

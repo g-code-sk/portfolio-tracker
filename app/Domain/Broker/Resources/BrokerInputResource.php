@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\BrokerType\Resources;
+namespace App\Domain\Broker\Resources;
 
-use App\Models\BrokerType;
+use App\Models\Broker;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property-read BrokerType $resource
+ * @property-read Broker $resource
  */
-final class BrokerTypeInputResource extends JsonResource
+final class BrokerInputResource extends JsonResource
 {
     /**
-     * @return array{id: int, name: string}
+     * @return array{value: int, label: string}
      */
     public function toArray(Request $request): array
     {

@@ -49,7 +49,7 @@ final class ImportPortfolioAction
         return [
             'headers' => $headers,
             'data' => $mappedData,
-            'broker_type_id' => $data->brokerTypeId,
+            'broker_id' => $data->brokerId,
             'portfolio_id' => $data->portfolioId,
             'row_count' => count($mappedData),
         ];

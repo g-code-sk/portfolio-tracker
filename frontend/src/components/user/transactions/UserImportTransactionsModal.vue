@@ -11,7 +11,7 @@
         <Modal v-model="isModalOpen" title="Import Transactions" :show-cancel-button="true" :disabled="isSubmitting">
             <form :id="importPortfolioFormId" class="space-y-4" @submit.prevent="submitImportTransactions">
                 <UserPortfolioSelect />
-                <BrokerTypeSelect />
+                <BrokerSelect />
                 <FileInput name="file" label="Import File" accept=".csv,.xlsx,.xls" hint="Select a CSV or Excel file to import" />
             </form>
 
@@ -31,7 +31,7 @@ import Modal from '@/components/ui/Modal.vue'
 import UploadIcon from '@/components/ui/icons/UploadIcon.vue'
 import FileInput from '@/components/ui/inputs/FileInput.vue'
 import UserPortfolioSelect from '@/components/user/portfolios/UserPortfolioSelect.vue'
-import BrokerTypeSelect from '@/components/user/transactions/BrokerTypeSelect.vue'
+import BrokerSelect from '@/components/user/transactions/BrokerSelect.vue'
 import { useUserPortfolios } from '@/composables/useUserPortfolios'
 import { importUserTransactionsApi } from '@/lib/api/transaction-api'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -51,7 +51,7 @@ const importPortfolioSchema = toTypedSchema(
     z.object({
         portfolioId: z.number().min(1, 'Portfolio is required'),
         transactionTypeId: z.preprocess((val) => (val === '' || val === undefined ? undefined : Number(val)), z.number().min(1, 'Transaction type is required')),
-        brokerTypeId: z.preprocess((val) => (val === '' || val === undefined ? undefined : Number(val)), z.number().min(1, 'Broker type is required')),
+        brokerId: z.preprocess((val) => (val === '' || val === undefined ? undefined : Number(val)), z.number().min(1, 'Broker is required')),
         file: z.instanceof(File, { message: 'File is required' }),
     }),
 )
@@ -60,7 +60,7 @@ const { handleSubmit, isSubmitting, meta, resetForm } = useForm({
     validationSchema: importPortfolioSchema,
     initialValues: {
         portfolioId: undefined,
-        brokerTypeId: undefined,
+        brokerId: undefined,
         file: undefined,
     },
 })
@@ -69,7 +69,7 @@ const submitImportTransactions = handleSubmit(async (values) => {
     try {
         const result = await importUserTransactionsApi({
             portfolioId: values.portfolioId,
-            brokerTypeId: values.brokerTypeId,
+            brokerId: values.brokerId,
             file: values.file,
         })
 

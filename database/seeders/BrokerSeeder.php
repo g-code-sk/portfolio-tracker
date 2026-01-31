@@ -2,21 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\BrokerType;
+use App\Models\Broker;
 use Illuminate\Database\Seeder;
 
-class BrokerTypeSeeder extends Seeder
+class BrokerSeeder extends Seeder
 {
     public function run(): void
     {
-        $types = [
+        $brokers = [
             ['name' => 'Trading 212'],
             ['name' => 'Interactive Brokers'],
         ];
 
-        collect($types)->each(function (array $type) {
-            BrokerType::query()->firstOrCreate(
-                ['name' => $type['name']],
+        collect($brokers)->each(function (array $broker) {
+            Broker::query()->firstOrCreate(
+                ['name' => $broker['name']],
             );
         });
     }

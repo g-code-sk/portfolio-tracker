@@ -17,8 +17,8 @@ final class ImportTransactionsData extends Data
         public int $portfolioId,
         #[Exists('transaction_types', 'id')]
         public int $transactionTypeId,
-        #[Exists('broker_types', 'id')]
-        public int $brokerTypeId,
+        #[Exists('brokers', 'id')]
+        public int $brokerId,
         #[File, Mimes(['csv', 'xlsx', 'xls'])]
         public UploadedFile $file,
     ) {}
