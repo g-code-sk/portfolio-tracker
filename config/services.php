@@ -39,4 +39,8 @@ return [
         'token' => env('FINNHUB_API_TOKEN'),
     ],
 
+    'alpha_vantage' => [
+        'token' => env('ALPHA_VANTAGE_API_TOKEN'),
+    ],
+
 ];
