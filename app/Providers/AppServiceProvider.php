@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Domain\Finnhub\Actions\FinnhubGetCompanyProfileAction;
 use App\Domain\Finnhub\Actions\FinnhubGetCurrentPriceInfoAction;
 use App\Domain\Finnhub\Actions\FinnhubSearchStockAction;
+use App\Domain\Finnhub\Services\FinnhubIsinSymbolResolverService;
 use App\Domain\Portfolio\Policies\PortfolioPolicy;
 use App\Models\Portfolio;
 use App\Services\HttpClientService;
@@ -41,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(FinnhubGetCompanyProfileAction::class, function ($app) {
             return new FinnhubGetCompanyProfileAction();
+        });
+
+        $this->app->singleton(FinnhubIsinSymbolResolverService::class, function ($app) {
+            return new FinnhubIsinSymbolResolverService();
         });
     }
 

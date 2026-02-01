@@ -24,10 +24,10 @@
 
 <script setup lang="ts">
 import Button from '@/components/ui/Button.vue'
+import PlusIcon from '@/components/ui/icons/PlusIcon.vue'
 import CurrencySelect from '@/components/ui/inputs/CurrencySelect.vue'
 import Input from '@/components/ui/inputs/Input.vue'
 import Modal from '@/components/ui/Modal.vue'
-import PlusIcon from '@/components/ui/icons/PlusIcon.vue'
 import { stringRequiredRule } from '@/lib/validation/rules'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'

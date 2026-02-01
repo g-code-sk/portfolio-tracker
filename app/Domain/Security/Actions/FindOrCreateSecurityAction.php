@@ -11,17 +11,30 @@ use App\Domain\Exchange\Actions\FindOrCreateExchangeAction;
 use App\Domain\Finnhub\Actions\FinnhubGetCompanyProfileAction;
 use App\Domain\Finnhub\Actions\FinnhubGetCurrentPriceInfoAction;
 use App\Domain\Finnhub\Actions\FinnhubSearchStockAction;
+use App\Domain\Finnhub\Services\FinnhubIsinSymbolResolverService;
 use App\Domain\Security\Actions\FindOrCreateSecurityTypeAction;
+use Exception;
+use RuntimeException;
 
 final class FindOrCreateSecurityAction
 {
-    public function execute(string $stockSymbol,): Security
+    public function execute(string $stockSymbol, ?string $isin = null): Security
     {
-        $searchResultsData = app(FinnhubSearchStockAction::class)->executeQuery($stockSymbol);
-        $currentPriceData = app(FinnhubGetCurrentPriceInfoAction::class)->executeQuery($stockSymbol);
-        $companyProfileData = app(FinnhubGetCompanyProfileAction::class)->executeQuery($stockSymbol);
+        try {
+            $searchResultsData = app(FinnhubSearchStockAction::class)->executeQuery($stockSymbol);
+            // $currentPriceData = app(FinnhubGetCurrentPriceInfoAction::class)->executeQuery($stockSymbol);
+            $companyProfileData = app(FinnhubGetCompanyProfileAction::class)->executeQuery($stockSymbol);
+        } catch (Exception $e) {
+            if (!$isin) {
+                throw new RuntimeException('FindOrCreateSecurityAction: Failed to create security for stock symbol ' . $stockSymbol, previous: $e);
+            }
+            // if ISIN is provided, try to resolve the stock symbol using exchange suffix from ISIN
+            $stockSymbol = app(FinnhubIsinSymbolResolverService::class)->resolve($stockSymbol, $isin);
 
-        // if one of the queries fail, exception is thrown and the transaction is not created
+            $searchResultsData = app(FinnhubSearchStockAction::class)->executeQuery($stockSymbol);
+            // $currentPriceData = app(FinnhubGetCurrentPriceInfoAction::class)->executeQuery($stockSymbol);
+            $companyProfileData = app(FinnhubGetCompanyProfileAction::class)->executeQuery($stockSymbol);
+        }
 
         $stockSearchData = $searchResultsData->findBySymbol($stockSymbol);
 
@@ -40,7 +53,7 @@ final class FindOrCreateSecurityAction
             'exchange_id' => $exchange?->id,
             'logo' => $companyProfileData->logo,
             'market_capitalization' => $companyProfileData->marketCapitalization,
-            'price' => $currentPriceData->currentPrice,
+            // 'price' => $currentPriceData->currentPrice,
             'price_refresh_time' => now(),
         ];
 

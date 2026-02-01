@@ -14,23 +14,24 @@ final class CreateUserTransactionAction
 {
     public function __construct() {}
 
-    public function execute(CreateUserTransactionData $requestData, int $userId): Transaction
+    public function execute(CreateUserTransactionData $transactionData, int $userId, ?string $isin = null): Transaction
     {
-        $security = Security::where('symbol', $requestData->stockSymbol)->first();
+        $security = Security::where('symbol', $transactionData->stockSymbol)->first();
 
         if (! $security) {
-            $security = app(FindOrCreateSecurityAction::class)->execute($requestData->stockSymbol);
+            $security = app(FindOrCreateSecurityAction::class)->execute($transactionData->stockSymbol, $isin);
         }
 
         $transaction = Transaction::create([
             'user_id' => $userId,
-            'portfolio_id' => $requestData->portfolioId,
+            'portfolio_id' => $transactionData->portfolioId,
             'security_id' => $security->id,
-            'transaction_type_id' => $requestData->transactionTypeId,
-            'amount' => $requestData->amount,
-            'price' => $requestData->price,
-            'date' => $requestData->date,
-            'fee' => $requestData->fee,
+            'transaction_type_id' => $transactionData->transactionTypeId,
+            'amount' => $transactionData->amount,
+            'price' => $transactionData->price,
+            'date' => $transactionData->date,
+            'fee' => $transactionData->fee,
+            'external_id' => $transactionData->externalId,
         ]);
 
         return $transaction;

@@ -36,7 +36,7 @@ const props = withDefaults(
         placeholder?: string
     }>(),
     {
-        name: 'stockId',
+        name: 'stockSymbol',
         label: 'Stock',
         hint: 'Search for a stock by name or symbol',
         disabled: false,

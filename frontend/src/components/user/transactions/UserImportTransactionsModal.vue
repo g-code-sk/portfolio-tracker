@@ -13,6 +13,7 @@
                 <UserPortfolioSelect />
                 <BrokerSelect />
                 <FileInput name="file" label="Import File" accept=".csv,.xlsx,.xls" hint="Select a CSV or Excel file to import" />
+                {{ values }}
             </form>
 
             <template #footer>
@@ -50,13 +51,12 @@ const { hasNoPortfolios } = useUserPortfolios()
 const importPortfolioSchema = toTypedSchema(
     z.object({
         portfolioId: z.number().min(1, 'Portfolio is required'),
-        transactionTypeId: z.preprocess((val) => (val === '' || val === undefined ? undefined : Number(val)), z.number().min(1, 'Transaction type is required')),
         brokerId: z.preprocess((val) => (val === '' || val === undefined ? undefined : Number(val)), z.number().min(1, 'Broker is required')),
         file: z.instanceof(File, { message: 'File is required' }),
     }),
 )
 
-const { handleSubmit, isSubmitting, meta, resetForm } = useForm({
+const { handleSubmit, isSubmitting, meta, resetForm, values } = useForm({
     validationSchema: importPortfolioSchema,
     initialValues: {
         portfolioId: undefined,

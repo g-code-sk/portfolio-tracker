@@ -6,19 +6,16 @@ namespace App\Domain\Transaction\Controllers;
 
 use App\Domain\Portfolio\Data\ImportTransactionsData;
 use App\Domain\Transaction\Actions\CreateUserTransactionAction;
+use App\Domain\Transaction\Actions\ImportUserTransactionsAction;
 use App\Domain\Transaction\Data\CreateUserTransactionData;
-use App\Domain\Transaction\Data\TransactionImportRowData;
-use App\Domain\Transaction\Import\TransactionImport;
 use App\Domain\Transaction\Resources\UserTransactionResource;
 use App\Models\Portfolio;
-use App\Models\Security;
 use App\Models\Transaction;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Maatwebsite\Excel\Facades\Excel;
-
+use Illuminate\Support\Facades\DB;
 
 final class UserTransactionController
 {
@@ -26,6 +23,7 @@ final class UserTransactionController
 
     public function __construct(
         private readonly CreateUserTransactionAction $createUserTransactionAction,
+        private readonly ImportUserTransactionsAction $importUserTransactionsAction,
     ) {}
 
     public function index(Request $request): JsonResource
@@ -49,29 +47,16 @@ final class UserTransactionController
             ->additional(['message' => 'Transaction created successfully']);
     }
 
-
-    public function import(ImportTransactionsData $data): HttpJsonResponse
+    public function import(ImportTransactionsData $importTransactionsData): HttpJsonResponse
     {
-        /** @var Portfolio */
-        $portfolio = Portfolio::findOrFail($data->portfolioId);
+        $portfolio = Portfolio::findOrFail($importTransactionsData->portfolioId);
         $this->authorize('userImportTransactions', $portfolio);
 
-        $import = new TransactionImport();
-        Excel::import($import, $data->file);
-        $transactions = $import->getCollection();
-
-        // Create or update securities
-        $transactions->each(function (TransactionImportRowData $transaction) {
-            $result =
-                $security = Security::firstOrCreate([
-                    'symbol' => $transaction->ticker,
-                ], [
-                    'name' => $transaction->name,
-                ]);
+        DB::transaction(function () use ($importTransactionsData, $portfolio) {
+            $transactionRows = $this->importUserTransactionsAction->execute($importTransactionsData, $portfolio);
         });
 
         return response()->json([
-            'data' => $transactions,
             'message' => 'File parsed successfully',
         ]);
     }

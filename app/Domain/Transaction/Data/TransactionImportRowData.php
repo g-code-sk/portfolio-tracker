@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Transaction\Data;
 
+use App\Models\TransactionType;
 use Spatie\LaravelData\Data;
 
 final class TransactionImportRowData extends Data
@@ -56,5 +57,10 @@ final class TransactionImportRowData extends Data
             currencyConversionFee: isset($row['currency_conversion_fee']) ? (float) $row['currency_conversion_fee'] : null,
             currencyCurrencyConversionFee: $row['currency_currency_conversion_fee'],
         );
+    }
+
+    public function isValidForImport(): bool
+    {
+        return $this->action === TransactionType::TRADING_212_BUY_ACTION || $this->action === TransactionType::TRADING_212_SELL_ACTION && $this->noOfShares > 0 && $this->priceShare > 0;
     }
 }

@@ -23,21 +23,21 @@
 </template>
 
 <script setup lang="ts">
-import { useField } from 'vee-validate';
-import { computed } from 'vue';
+import { useField } from 'vee-validate'
+import { computed } from 'vue'
 
 interface Props {
-    name?: string;
-    id?: string;
-    modelValue?: string;
-    type?: 'text' | 'email' | 'password' | 'tel' | 'number' | 'url' | 'search' | 'date' | 'time' | 'datetime-local';
-    label?: string;
-    placeholder?: string;
-    required?: boolean;
-    minlength?: number;
-    disabled?: boolean;
-    hint?: string;
-    autocomplete?: string;
+    name?: string
+    id?: string
+    modelValue?: string
+    type?: 'text' | 'email' | 'password' | 'tel' | 'number' | 'url' | 'search' | 'date' | 'time' | 'datetime-local'
+    label?: string
+    placeholder?: string
+    required?: boolean
+    minlength?: number
+    disabled?: boolean
+    hint?: string
+    autocomplete?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -45,68 +45,68 @@ const props = withDefaults(defineProps<Props>(), {
     required: false,
     disabled: false,
     modelValue: '',
-});
+})
 
 const emit = defineEmits<{
-    'update:modelValue': [value: string];
-    blur: [event: FocusEvent];
-    focus: [event: FocusEvent];
-}>();
+    'update:modelValue': [value: string]
+    blur: [event: FocusEvent]
+    focus: [event: FocusEvent]
+}>()
 
-type FieldContext = ReturnType<typeof useField<string>>;
-let field: FieldContext | null = null;
+type FieldContext = ReturnType<typeof useField<string>>
+let field: FieldContext | null = null
 
 if (props.name) {
-    field = useField<string>(() => props.name as string);
+    field = useField<string>(() => props.name as string)
 }
 
 const inputValue = computed(() => {
     if (field) {
-        return field.value.value ?? '';
+        return field.value.value ?? ''
     }
-    return props.modelValue ?? '';
-});
+    return props.modelValue ?? ''
+})
 
 const handleInput = (event: Event) => {
-    const newValue = (event.target as HTMLInputElement).value;
+    const newValue = (event.target as HTMLInputElement).value
     if (field) {
-        field.handleChange(event);
+        field.handleChange(event)
     } else {
-        emit('update:modelValue', newValue);
+        emit('update:modelValue', newValue)
     }
-};
+}
 
 const handleBlur = (event: FocusEvent) => {
     if (field) {
-        field.handleBlur(event);
+        field.handleBlur(event)
     }
-    emit('blur', event);
-};
+    emit('blur', event)
+}
 
 const handleFocus = (event: FocusEvent) => {
-    emit('focus', event);
-};
+    emit('focus', event)
+}
 
-const computedId = computed(() => props.id ?? props.name ?? '');
+const computedId = computed(() => props.id ?? props.name ?? '')
 
 const activeError = computed(() => {
     if (field) {
-        return field.errorMessage.value;
+        return field.errorMessage.value
     }
-    return '';
-});
+    return ''
+})
 
 const showError = computed(() => {
     if (field) {
-        return field.meta.touched && Boolean(field.errorMessage.value);
+        return field.meta.touched && Boolean(field.errorMessage.value)
     }
-    return false;
-});
+    return false
+})
 
 const inputClasses = computed(() => {
-    const baseClasses = 'w-full rounded-lg border px-4 py-2.5 text-gray-900 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500';
-    const borderClasses = showError.value ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500';
-    const disabledClasses = 'disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-500';
-    return `${baseClasses} ${borderClasses} ${disabledClasses}`;
-});
+    const baseClasses = 'w-full rounded-lg border px-4 py-2.5 text-gray-900 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500'
+    const borderClasses = showError.value ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500'
+    const disabledClasses = 'disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-500'
+    return `${baseClasses} ${borderClasses} ${disabledClasses}`
+})
 </script>
